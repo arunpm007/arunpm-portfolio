@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Archivo, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
-import Navbar from "@/components/Navbar";
 
 const archivo = Archivo({
   variable: "--font-archivo",
@@ -46,11 +45,8 @@ export default function RootLayout({
       lang="en"
       className={`${archivo.variable} ${spaceGrotesk.variable} antialiased`}
     >
-      <body className="grain min-h-screen">
-        <SmoothScroll>
-          <Navbar />
-          {children}
-        </SmoothScroll>
+      <body className="grain min-h-screen" suppressHydrationWarning>
+        <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>
   );
