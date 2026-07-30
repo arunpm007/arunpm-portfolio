@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Arun P M — Portfolio
 
-## Getting Started
+A cinematic, high-performance developer portfolio built with **Next.js**, **React Three Fiber** and a **custom GLSL shader** hero. Designed to be fast on everything from flagship laptops to low-end phones via device tiering.
 
-First, run the development server:
+> Live: _add your Vercel URL here_
+
+## Highlights
+
+- **Custom GLSL fresnel shader** on a displaced icosahedron — a dark glass orb with a green rim, plus a particle field and cursor parallax.
+- **Device-tiered 3D** — `useDeviceTier` scales geometry/particle detail and DPR, and falls back to a static poster on low-end / reduced-motion devices.
+- **Smooth scroll** (Lenis) + **scroll-reveal** animations, respecting `prefers-reduced-motion`.
+- **Data-driven content** — all copy lives in [`lib/site.ts`](lib/site.ts); components never need editing to update text.
+- **Responsive** and theme-consistent, with an accessible dark palette.
+
+## Tech stack
+
+| Area | Tools |
+|------|-------|
+| Framework | Next.js 16 (App Router), React 19, TypeScript |
+| 3D | Three.js, React Three Fiber, drei, GLSL |
+| Animation | GSAP, Lenis |
+| Styling | Tailwind CSS v4 (CSS-first `@theme`) |
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3050](http://localhost:3050).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build   # production build
+npm run start   # serve the production build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project structure
 
-## Learn More
+```
+app/
+  layout.tsx        # fonts, metadata, smooth-scroll + navbar
+  page.tsx          # section composition
+  globals.css       # theme tokens + effects (Tailwind v4)
+components/
+  Hero.tsx          # hero section + text overlay
+  HeroCanvas.tsx    # tiering + <Canvas> + poster fallback
+  three/
+    HeroScene.tsx   # GLSL shader blob + particles + parallax
+    useDeviceTier.ts
+  Work.tsx  Projects.tsx  Skills.tsx  About.tsx  Contact.tsx
+lib/
+  site.ts           # single source of truth for all content
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Customizing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Content** — edit [`lib/site.ts`](lib/site.ts) (profile, experience, projects, skills).
+- **Theme** — edit the `@theme` block in [`app/globals.css`](app/globals.css).
+- **Résumé** — place your PDF at `public/arunpm_resume.pdf`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deploy
 
-## Deploy on Vercel
+Deploys cleanly to [Vercel](https://vercel.com): import the GitHub repo, keep defaults, deploy.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built by Arun P M.
