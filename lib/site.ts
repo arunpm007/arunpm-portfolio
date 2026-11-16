@@ -161,6 +161,15 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    title: "IT Support Desk",
+    blurb:
+      "An AI helpdesk agent for small offices. Staff describe a problem in their own words; the agent checks their computer's repair history, suggests a self-help fix, and raises a ticket when a problem keeps coming back. Built on Claude tool use, with permissions enforced in code rather than the prompt and every tool call validated with Zod.",
+    tags: ["Next.js 16", "TypeScript", "Claude API", "Tool use", "Zod", "Tailwind CSS"],
+    status: "Open source",
+    featured: true,
+    repo: "https://github.com/arunpm007/it-support-desk",
+  },
+  {
     title: "AnimeMind",
     blurb:
       "A personal watch tracker that works out which seasons you've seen, what comes next and whether it has been released. Versioned REST API, refresh-token rotation with theft detection, row-level security, a rate-limited and cached data provider, and 63 automated tests.",
