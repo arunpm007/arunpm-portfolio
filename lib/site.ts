@@ -173,8 +173,9 @@ export const projects: Project[] = [
     blurb:
       "A used-car listings site for a local dealer. The admin lists a car from a phone, with in-browser photo resizing that strips GPS data. Rate-limited sell-your-car form with spam protection, a leads tracker, and owner details kept private by row-level security.",
     tags: ["Next.js 16", "Supabase", "PostgreSQL", "Tailwind CSS"],
-    status: "Built",
+    status: "Live",
     featured: true,
+    href: "https://coorg-car-point.netlify.app/",
   },
   {
     title: "3D Material Studio",
