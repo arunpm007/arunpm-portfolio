@@ -45,7 +45,7 @@ export default function Contact() {
             <span className="text-gradient-accent">worth making?</span>
           </h2>
           <p className="mx-auto mt-6 max-w-md text-muted">
-            I&apos;m open to frontend &amp; 3D roles and interesting
+            I&apos;m open to senior frontend and lead roles and interesting
             collaborations. The fastest way to reach me is email.
           </p>
 

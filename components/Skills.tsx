@@ -8,7 +8,7 @@ export default function Skills() {
       <SectionHeading
         index="03"
         title="Skills"
-        subtitle="The toolkit — weighted toward creative frontend and real-time 3D."
+        subtitle="The toolkit — frontend first, with the backend, auth and infra to ship it."
       />
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

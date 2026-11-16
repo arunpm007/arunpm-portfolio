@@ -4,6 +4,7 @@ import { projects } from "@/lib/site";
 
 const statusStyles: Record<string, string> = {
   Live: "border-accent/40 bg-accent/10 text-accent-soft",
+  Built: "border-violet-400/30 bg-violet-400/10 text-violet-300",
   "Open source": "border-sky-400/30 bg-sky-400/10 text-sky-300",
   "In progress": "border-amber-400/30 bg-amber-400/10 text-amber-300",
   Planned: "border-border bg-surface-2/60 text-faint",
@@ -15,7 +16,7 @@ export default function Projects() {
       <SectionHeading
         index="02"
         title="Projects"
-        subtitle="Selected builds — interactive 3D, creative frontend and full-stack. More landing on GitHub soon."
+        subtitle="Side projects — full-stack products and 3D tooling, built end to end."
       />
 
       <div className="grid gap-6 sm:grid-cols-2">

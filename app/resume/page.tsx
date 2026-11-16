@@ -3,7 +3,7 @@ import { profile } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Résumé — Arun P M",
-  description: "Résumé of Arun P M — Frontend & 3D Web Engineer.",
+  description: "Résumé of Arun P M — Senior Frontend Lead Engineer.",
 };
 
 const downloadName = "Arun-P-M-Resume.pdf";

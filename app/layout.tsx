@@ -16,13 +16,15 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Arun P M — Frontend & 3D Engineer",
+  title: "Arun P M — Senior Frontend Lead Engineer",
   description:
-    "Frontend & 3D web engineer building immersive, high-performance interfaces with React, Next.js, Three.js and React Three Fiber.",
+    "Senior frontend lead engineer — React, Next.js and TypeScript, design systems, single sign-on, security and performance across connected consumer products.",
   keywords: [
     "Arun P M",
     "Frontend Engineer",
-    "3D Web",
+    "Frontend Lead",
+    "Design Systems",
+    "TypeScript",
     "Three.js",
     "React Three Fiber",
     "React",
@@ -30,9 +32,9 @@ export const metadata: Metadata = {
     "WebGL",
   ],
   openGraph: {
-    title: "Arun P M — Frontend & 3D Engineer",
+    title: "Arun P M — Senior Frontend Lead Engineer",
     description:
-      "Immersive, high-performance web experiences with React, Next.js & Three.js.",
+      "Senior frontend lead — React, Next.js, TypeScript and design systems.",
     type: "website",
   },
 };

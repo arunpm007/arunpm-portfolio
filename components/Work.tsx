@@ -8,7 +8,7 @@ export default function Work() {
       <SectionHeading
         index="01"
         title="Experience"
-        subtitle="Where I've shipped — creative frontend today, enterprise mobile before that."
+        subtitle="Where I've shipped — leading frontend today, enterprise mobile before that."
       />
 
       <div className="space-y-6">

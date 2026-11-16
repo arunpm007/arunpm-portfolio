@@ -26,7 +26,7 @@ export default function Hero() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-70" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
           </span>
-          Available for frontend &amp; 3D roles
+          Open to senior frontend roles
         </span>
 
         <h1 className="font-heading text-6xl font-extrabold leading-[0.95] tracking-tight sm:text-7xl md:text-8xl">
