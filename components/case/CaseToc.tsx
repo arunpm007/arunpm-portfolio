@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { SECTIONS } from "@/lib/case-studies";
 
 /** Sticky section index for a case study; highlights the section in view. */
@@ -31,7 +32,11 @@ export default function CaseToc() {
 
   return (
     <nav aria-label="Case study sections" className="hidden lg:block">
-      <ol className="sticky top-28 space-y-1">
+      <div className="sticky top-28">
+      <Link href="/#work" className="label mb-6 inline-flex items-center gap-2 border-b hairline pb-4 transition-colors hover:!text-signal">
+        ← All case studies
+      </Link>
+      <ol className="space-y-1">
         {SECTIONS.map((s, i) => {
           const on = active === s.id;
           return (
@@ -51,6 +56,7 @@ export default function CaseToc() {
           );
         })}
       </ol>
+      </div>
     </nav>
   );
 }

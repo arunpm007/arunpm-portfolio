@@ -20,7 +20,6 @@ export default function PageCurtain() {
     }
     const el = ref.current;
     if (!el || reducedMotion()) return;
-    window.scrollTo(0, 0);
     const gsap = getGsap();
     gsap.fromTo(
       el,

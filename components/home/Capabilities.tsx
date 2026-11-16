@@ -14,7 +14,7 @@ export default function Capabilities() {
             What I own<span className="text-signal">.</span>
           </>
         }
-        aside="Six areas I've architected and shipped myself — not supervised from a distance."
+        aside="Frontend first — and the full-stack depth to own it end to end. Each area proven in more than one place."
       />
 
       <div className="grid border-l border-t hairline md:grid-cols-2 lg:grid-cols-3">
@@ -39,7 +39,14 @@ export default function Capabilities() {
                   </li>
                 ))}
               </ul>
-              <p className="label mt-6 leading-5">{c.stack}</p>
+              <div className="mt-6 flex flex-wrap gap-1.5">
+                {c.evidence.map((e) => (
+                  <span key={e} className="border hairline px-2 py-1 font-mono text-[0.62rem] uppercase tracking-[0.1em] text-fg">
+                    {e}
+                  </span>
+                ))}
+              </div>
+              <p className="label mt-3 leading-5">{c.stack}</p>
             </article>
           </Reveal>
         ))}

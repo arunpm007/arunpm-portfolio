@@ -6,7 +6,7 @@
 //  internal code, no exploit details, no invented numbers.
 // ------------------------------------------------------------------
 
-export type Figure = "shell-map" | "sso-flow" | "sign-out-flow" | "tier-ladder" | "asset-bars" | "layer-stack";
+export type Figure = "shell-map" | "sso-flow" | "sign-out-flow" | "tier-ladder" | "asset-bars" | "layer-stack" | "app-layers" | "agent-loop";
 
 export type Section = "problem" | "context" | "role" | "decisions" | "tradeoffs" | "quality" | "outcome" | "next";
 
@@ -24,6 +24,10 @@ export const SECTIONS: { id: Section; label: string }[] = [
 export type CaseStudy = {
   slug: string;
   index: string;
+  /** Where the work happened, e.g. "Etta Global" or "Own project". */
+  where: string;
+  /** Featured on the home page; others are linked from Experience. */
+  featured: boolean;
   title: string;
   /** Word(s) in the title set in the signal colour. */
   emphasis: string;
@@ -45,69 +49,200 @@ export type CaseStudy = {
 
 export const caseStudies: CaseStudy[] = [
   {
-    slug: "platform-shell",
+    slug: "realtime-3d",
     index: "01",
-    title: "One shell, four products",
-    emphasis: "four products",
+    where: "Etta Global",
+    featured: true,
+    title: "Real-time 3D in production",
+    emphasis: "in production",
     summary:
-      "Architecting the platform's shell so people browse and buy every product in place — each in its own look, with money always handled by the platform and pricing always owned by the product.",
+      "The 3D layer of a collectibles ecosystem — a cinematic pack opening, holographic cards and a film-like company site — engineered to stay fast and stable on everyday phones.",
     meta: [
-      { label: "Role", value: "Frontend architect & lead" },
-      { label: "Scope", value: "Platform shell + three product canvases" },
+      { label: "Role", value: "Lead engineer, 3D & motion" },
+      { label: "Scope", value: "Marketplace, product sites, company site" },
       { label: "Year", value: "2026" },
-      { label: "Stack", value: "Next.js · React · TypeScript · Route handlers" },
+      { label: "Stack", value: "Three.js · React Three Fiber · GLSL · GSAP" },
     ],
     results: [
-      { value: "4", label: "Products, one shell" },
-      { value: "6", label: "Shared step-flows" },
-      { value: "1", label: "Checkout for the ecosystem" },
+      { value: "28→61", label: "FPS on low-end GPUs" },
+      { value: "1", label: "Shared WebGL context" },
+      { value: "3", label: "Quality tiers, chosen by GPU" },
     ],
     problem: [
-      "The platform account was already the hub for identity, payments and wallets — but buying anything meant leaving for that product's own site. Four checkouts, four looks, four sets of bugs.",
-      "The brief: let people browse and buy every product from inside the platform, without the platform turning into a second, out-of-sync copy of each product.",
+      "3D is the signature of these products — a pack you open, cards that catch the light, a company story told as a film. But the first 3D release was heavy, ran at 28 FPS on low-end devices, and after a library upgrade the pack animation silently broke on the live site.",
     ],
     context: [
-      "Each product owns its catalogue and pricing; the platform owns money and identity.",
-      "The platform's session lives in an httpOnly cookie that page code cannot read — by design.",
-      "Design wanted each product to feel like itself inside the shell, not like a platform skin.",
+      "Cutting the 3D was not an option; it is what the products are.",
+      "Most visitors are on mid-range phones.",
+      "Several teams touch the same 3D surfaces.",
     ],
     role: [
-      "Owned the shell's architecture: the product-canvas registry, the theming boundary and the commerce flow.",
-      "Built the product canvases and step-flows, and set the rules other engineers follow inside the shell.",
+      "Owned the 3D and motion layer across the products: scene architecture, quality tiers, asset pipeline and production stability.",
+      "Built the signature moments hands-on and worked with design on how they move.",
     ],
     decisions: [
-      { title: "A registry of product canvases", text: "Each product plugs in as a canvas with its own chrome and screens; the shell provides navigation, cart and the money layer. Adding a product is a registration, not a fork." },
-      { title: "Products keep pricing authority", text: "The shell never prices anything. It calls the product through a same-origin, allow-listed proxy, the product creates the order, and the platform charges it." },
-      { title: "A deliberate theme boundary", text: "Inside a canvas everything wears the product's palette. Payment, confirmation and receipts always appear as the platform's own modal, so people always know who is taking their money." },
-      { title: "One step-flow pattern, six flows", text: "Shop, inventory, pay, security, devices and orders share one step-flow pattern and one state matrix — loading, empty, error, partial and done are designed once, not six times." },
-      { title: "Translation that survives React", text: "The shell is translated in place. A small re-translate hook makes dialogs and drawers translate when they open instead of staying in English." },
+      { title: "One canvas for every 3D moment", text: "The pack lives on a single shared WebGL canvas that follows it from the hero into the reveal, so the GPU context and models are created once." },
+      { title: "Tier by GPU, not screen size", text: "A capability probe picks a quality tier — geometry detail, pixel ratio, effects — with a static fallback for software renderers." },
+      { title: "An asset pipeline with budgets", text: "Every asset audited by size and use; art re-encoded to WebP and AVIF at displayed sizes. Static assets went from 191 MB to 53 MB and card art from 8.4 MB to 0.6 MB." },
+      { title: "Motion as a system", text: "Shared rules for how things move: animate one element instead of remounting video, collapse rapid clicks into one transition, always ship a reduced-motion path." },
+      { title: "A film, with a phone mode", text: "The company site is a Three.js film with spring-stepped chapters on desktop and its own swipe-to-step mode on phones, rather than a squeezed desktop scroll." },
     ],
     tradeoffs: [
-      { chose: "A same-origin, allow-listed proxy", over: "Exposing the session token to page code", why: "One more hop, but the session stays httpOnly and the shell can make only the calls it needs." },
-      { chose: "Product price authority", over: "A platform copy of each catalogue", why: "Slower to build, but prices can never drift between a product and the shell." },
-      { chose: "Platform-styled payment screens", over: "Fully product-styled checkout", why: "A visible seam, on purpose: money always looks like the platform people trust with it." },
+      { chose: "Tiering by GPU", over: "Tiering by screen size", why: "Screen size is a poor proxy for GPU power; it costs one capability probe at start-up." },
+      { chose: "A still image on software renderers", over: "3D everywhere", why: "Some visitors see stillness instead of motion — better than stutter." },
+      { chose: "Size budgets per asset type", over: "A one-off clean-up", why: "Budgets need upkeep, but they stop the weight creeping back." },
     ],
     quality: [
-      "Automated tests for each product canvas and flow.",
-      "Every flow walked end to end with real orders and gift-card payments.",
-      "Old page URLs deep-link into the right shell screen, so nothing bookmarked breaks.",
+      "FPS measured on a low-end device before and after tiering.",
+      "The production crash reproduced on the exact live build: a React effect looping on a value the 3D library recreated each update.",
+      "Motion verified frame by frame — a clean console isn't proof that motion works.",
     ],
     outcome: [
-      "People browse and buy three products from inside the platform, each in its own look.",
-      "One checkout and one set of payment screens across the ecosystem.",
-      "A pattern the team extends: new products plug in as canvases.",
+      "Low-end devices went from 28 to 61 FPS; the 3D now loads a fraction of the weight.",
+      "The pack opening works on the live site again, on one shared canvas.",
+      "A tiering and motion approach reused across the products — and on this portfolio's own hero card.",
     ],
     next: [
-      "Rebuild the remaining legacy pages on the shell and retire the old routes.",
-      "Bring the shell to phones once the desktop layouts settle.",
-      "Contract tests on the proxy's allow-listed calls.",
+      "Automate the asset pipeline (KTX2, meshopt) in CI with size checks on every pull request.",
+      "Real-user monitoring of FPS and Core Web Vitals per tier.",
+      "Set tier thresholds from that data instead of rules of thumb.",
     ],
-    lesson: "Draw the ownership lines first — who prices, who charges, who styles — and the architecture follows.",
-    figures: [{ after: "decisions", figure: "shell-map", caption: "The shell owns navigation, cart and money. Products own their canvas and their prices, reached through an allow-listed proxy." }],
+    lesson: "3D in production is an engineering problem first: budgets, tiers and fallbacks are what let the magic ship.",
+    figures: [
+      { after: "decisions", figure: "tier-ladder", caption: "Quality tiers, chosen by GPU. This portfolio's hero card uses the same approach." },
+      { after: "outcome", figure: "asset-bars", caption: "Asset weight before and after, to scale." },
+    ],
+  },
+  {
+    slug: "ai-helpdesk",
+    index: "02",
+    where: "Own project · open source",
+    featured: true,
+    title: "An AI agent you can trust",
+    emphasis: "you can trust",
+    summary:
+      "An IT helpdesk agent for small offices that looks up devices, spots repeat problems and raises tickets on its own — with permissions enforced in code, not in the prompt.",
+    meta: [
+      { label: "Role", value: "Designer & engineer" },
+      { label: "Type", value: "Own project · open source" },
+      { label: "Year", value: "2026" },
+      { label: "Stack", value: "Next.js · TypeScript · Claude API · Zod" },
+    ],
+    results: [
+      { value: "8", label: "Tools, each permission-checked" },
+      { value: "2", label: "Roles, enforced in code" },
+      { value: "0", label: "Trust placed in the prompt" },
+    ],
+    problem: [
+      "A 50–100 person office can't justify an IT service-management suite, but it still needs to track every computer, help non-technical staff fix common problems, and raise a proper ticket when something needs a technician.",
+      "The obvious answer is a chatbot. The real problem is making one that can take actions safely.",
+    ],
+    context: [
+      "Users of every age and skill level, describing problems in their own words.",
+      "Two roles with very different rights: employees and IT staff.",
+      "An LLM can be talked into things, so its output can't be trusted to respect those rights.",
+    ],
+    role: [
+      "Designed and built it end to end: the agent loop, the tools, the permission model, the UI and the data layer.",
+    ],
+    decisions: [
+      { title: "A streamed agent loop", text: "The model gets the conversation and a tool list, asks for tools, the app runs them — in parallel when it can — and the UI shows each step live. A hard limit of eight rounds stops runaway loops." },
+      { title: "Permissions in code, twice", text: "Employees are never offered staff-only tools, and every tool checks again before it runs. Even if someone talks the model into asking for another person's device, the tool refuses." },
+      { title: "Model output is untrusted input", text: "Every tool call is validated with Zod on top of strict tool schemas before anything executes." },
+      { title: "The server owns the conversation", text: "The browser holds only an ID, so it can't rewrite what the model or the tools said earlier." },
+      { title: "Failures stay inside the loop", text: "A failed tool returns an error result the model can explain, instead of crashing the conversation; declined requests retry on a fallback model." },
+    ],
+    tradeoffs: [
+      { chose: "Code-enforced permissions", over: "Rules in the system prompt", why: "Prompts can be argued with; code can't. The model is useful, but never the security boundary." },
+      { chose: "Server-held conversations", over: "Client-side chat state", why: "A little more storage, in exchange for a history no one can tamper with." },
+      { chose: "Parallel tool calls", over: "One tool at a time", why: "Faster answers; every tool is written to be independent so order never matters." },
+    ],
+    quality: [
+      "Scripted scenarios: a repeat-slowness report becomes a ticket; a request for someone else's device is refused.",
+      "Typed tools end to end, with validation on every input.",
+      "Duplicate-ticket checks before raising anything new.",
+    ],
+    outcome: [
+      "Non-technical staff get plain-language self-help; repeat problems become tickets automatically.",
+      "IT staff get fleet-level answers like which machines to replace first.",
+      "Every action the agent took is visible under its answer.",
+    ],
+    next: [
+      "Move storage from a JSON file to PostgreSQL behind the same interface.",
+      "An evaluation suite that scores the agent's decisions on recorded scenarios.",
+      "Single sign-on so it drops into an office's existing accounts.",
+    ],
+    lesson: "An agent is only as trustworthy as the code around it. Let the model decide — let the code permit.",
+    figures: [{ after: "decisions", figure: "agent-loop", caption: "The model proposes; the code checks the role, validates the input and runs the tool. Every step is streamed to the UI." }],
+  },
+  {
+    slug: "native-crm",
+    index: "03",
+    where: "Vtiger CRM",
+    featured: true,
+    title: "An enterprise CRM in your pocket",
+    emphasis: "in your pocket",
+    summary:
+      "Owning a field-sales CRM's mobile app end to end as its only engineer — re-platforming it, making it fast and stable, and building the features people use on the road.",
+    meta: [
+      { label: "Role", value: "Sole mobile engineer" },
+      { label: "Scope", value: "iOS + Android, architecture to store" },
+      { label: "Years", value: "2023 — 2026" },
+      { label: "Stack", value: "Flutter · Dart · Riverpod · Firebase" },
+    ],
+    results: [
+      { value: "2", label: "Platforms, one codebase" },
+      { value: "50+", label: "Production issues closed" },
+      { value: "4+", label: "Store rating, held" },
+    ],
+    problem: [
+      "Sales teams run their day from the CRM on their phones — checking in at customer sites, scanning documents, picking up leads. The app they had was slow to start and crashed often, and every fix risked breaking something else.",
+      "There was one engineer for the whole app. That was me.",
+    ],
+    context: [
+      "Enterprise customers on both iOS and Android, from one Flutter codebase.",
+      "Field users with patchy connectivity — the app had to stay useful offline.",
+      "Releases couldn't stop while the foundations were rebuilt.",
+    ],
+    role: [
+      "Owned everything: architecture, features, debugging and the full release cycle — build, test and store release.",
+      "Worked directly with product and support on what field users needed most.",
+    ],
+    decisions: [
+      { title: "Re-platform in place", text: "Moved the app onto Riverpod and MVVM with separate UI, domain and data layers — screen by screen, so releases kept going out." },
+      { title: "Cache first, reconcile later", text: "Reads come from a local cache and refresh in the background, and redundant network calls were removed — the app opens fast even on a weak signal." },
+      { title: "Fix by impact", text: "Production issues were triaged by how much they hurt field users, and 50+ were closed — load time down 30% and crashes down 35%." },
+      { title: "Field-first features", text: "Geo-fenced check-in and check-out, camera document scanning, and deep links that open the right record." },
+      { title: "Push that lands in the right place", text: "Firebase notifications handled in the background and routed through deep links straight to the record they're about." },
+    ],
+    tradeoffs: [
+      { chose: "Incremental re-platform", over: "A full rewrite", why: "Slower to finish, but customers kept getting releases and nothing regressed all at once." },
+      { chose: "Cache-first reads", over: "Always-fresh data", why: "Occasionally a few seconds stale — in exchange for an app that opens instantly in a basement car park." },
+      { chose: "One Flutter codebase", over: "Two native apps", why: "One engineer could own both platforms properly, with a single architecture to reason about." },
+    ],
+    quality: [
+      "Every release through the same build → test → store pipeline.",
+      "Layered architecture made logic testable without the UI.",
+      "Stability measured release over release: load time and crash rate tracked, not guessed.",
+    ],
+    outcome: [
+      "Load time down 30% and crash rate down 35%.",
+      "A 4+ store rating held through the re-platform.",
+      "A maintainable codebase with clear layers instead of a fragile tangle.",
+    ],
+    next: [
+      "Automated integration tests on a device farm before each release.",
+      "Feature flags for staged rollouts.",
+      "Clearer conflict handling when offline edits meet newer server data.",
+    ],
+    lesson: "On mobile, speed and stability are features. Field users notice the second a tap doesn't land.",
+    figures: [{ after: "decisions", figure: "app-layers", caption: "UI, domain and data layers, with Riverpod wiring them — logic testable without the UI." }],
   },
   {
     slug: "identity",
-    index: "02",
+    index: "04",
+    where: "Etta Global",
+    featured: true,
     title: "Identity for an ecosystem",
     emphasis: "an ecosystem",
     summary:
@@ -171,71 +306,73 @@ export const caseStudies: CaseStudy[] = [
     ],
   },
   {
-    slug: "realtime-3d",
-    index: "03",
-    title: "Real-time 3D in production",
-    emphasis: "in production",
+    slug: "platform-shell",
+    index: "05",
+    where: "Etta Global",
+    featured: false,
+    title: "One shell, four products",
+    emphasis: "four products",
     summary:
-      "The 3D layer of a collectibles ecosystem — a cinematic pack opening, holographic cards and a film-like company site — engineered to stay fast and stable on everyday phones.",
+      "Architecting the platform's shell so people browse and buy every product in place — each in its own look, with money always handled by the platform and pricing always owned by the product.",
     meta: [
-      { label: "Role", value: "Lead engineer, 3D & motion" },
-      { label: "Scope", value: "Marketplace, product sites, company site" },
+      { label: "Role", value: "Frontend architect & lead" },
+      { label: "Scope", value: "Platform shell + three product canvases" },
       { label: "Year", value: "2026" },
-      { label: "Stack", value: "Three.js · React Three Fiber · GLSL · GSAP" },
+      { label: "Stack", value: "Next.js · React · TypeScript · Route handlers" },
     ],
     results: [
-      { value: "28→61", label: "FPS on low-end GPUs" },
-      { value: "1", label: "Shared WebGL context" },
-      { value: "3", label: "Quality tiers, chosen by GPU" },
+      { value: "4", label: "Products, one shell" },
+      { value: "6", label: "Shared step-flows" },
+      { value: "1", label: "Checkout for the ecosystem" },
     ],
     problem: [
-      "3D is the signature of these products — a pack you open, cards that catch the light, a company story told as a film. But the first 3D release was heavy, ran at 28 FPS on low-end devices, and after a library upgrade the pack animation silently broke on the live site.",
+      "The platform account was already the hub for identity, payments and wallets — but buying anything meant leaving for that product's own site. Four checkouts, four looks, four sets of bugs.",
+      "The brief: let people browse and buy every product from inside the platform, without the platform turning into a second, out-of-sync copy of each product.",
     ],
     context: [
-      "Cutting the 3D was not an option; it is what the products are.",
-      "Most visitors are on mid-range phones.",
-      "Several teams touch the same 3D surfaces.",
+      "Each product owns its catalogue and pricing; the platform owns money and identity.",
+      "The platform's session lives in an httpOnly cookie that page code cannot read — by design.",
+      "Design wanted each product to feel like itself inside the shell, not like a platform skin.",
     ],
     role: [
-      "Owned the 3D and motion layer across the products: scene architecture, quality tiers, asset pipeline and production stability.",
-      "Built the signature moments hands-on and worked with design on how they move.",
+      "Owned the shell's architecture: the product-canvas registry, the theming boundary and the commerce flow.",
+      "Built the product canvases and step-flows, and set the rules other engineers follow inside the shell.",
     ],
     decisions: [
-      { title: "One canvas for every 3D moment", text: "The pack lives on a single shared WebGL canvas that follows it from the hero into the reveal, so the GPU context and models are created once." },
-      { title: "Tier by GPU, not screen size", text: "A capability probe picks a quality tier — geometry detail, pixel ratio, effects — with a static fallback for software renderers." },
-      { title: "An asset pipeline with budgets", text: "Every asset audited by size and use; art re-encoded to WebP and AVIF at displayed sizes. Static assets went from 191 MB to 53 MB and card art from 8.4 MB to 0.6 MB." },
-      { title: "Motion as a system", text: "Shared rules for how things move: animate one element instead of remounting video, collapse rapid clicks into one transition, always ship a reduced-motion path." },
-      { title: "A film, with a phone mode", text: "The company site is a Three.js film with spring-stepped chapters on desktop and its own swipe-to-step mode on phones, rather than a squeezed desktop scroll." },
+      { title: "A registry of product canvases", text: "Each product plugs in as a canvas with its own chrome and screens; the shell provides navigation, cart and the money layer. Adding a product is a registration, not a fork." },
+      { title: "Products keep pricing authority", text: "The shell never prices anything. It calls the product through a same-origin, allow-listed proxy, the product creates the order, and the platform charges it." },
+      { title: "A deliberate theme boundary", text: "Inside a canvas everything wears the product's palette. Payment, confirmation and receipts always appear as the platform's own modal, so people always know who is taking their money." },
+      { title: "One step-flow pattern, six flows", text: "Shop, inventory, pay, security, devices and orders share one step-flow pattern and one state matrix — loading, empty, error, partial and done are designed once, not six times." },
+      { title: "Translation that survives React", text: "The shell is translated in place. A small re-translate hook makes dialogs and drawers translate when they open instead of staying in English." },
     ],
     tradeoffs: [
-      { chose: "Tiering by GPU", over: "Tiering by screen size", why: "Screen size is a poor proxy for GPU power; it costs one capability probe at start-up." },
-      { chose: "A still image on software renderers", over: "3D everywhere", why: "Some visitors see stillness instead of motion — better than stutter." },
-      { chose: "Size budgets per asset type", over: "A one-off clean-up", why: "Budgets need upkeep, but they stop the weight creeping back." },
+      { chose: "A same-origin, allow-listed proxy", over: "Exposing the session token to page code", why: "One more hop, but the session stays httpOnly and the shell can make only the calls it needs." },
+      { chose: "Product price authority", over: "A platform copy of each catalogue", why: "Slower to build, but prices can never drift between a product and the shell." },
+      { chose: "Platform-styled payment screens", over: "Fully product-styled checkout", why: "A visible seam, on purpose: money always looks like the platform people trust with it." },
     ],
     quality: [
-      "FPS measured on a low-end device before and after tiering.",
-      "The production crash reproduced on the exact live build: a React effect looping on a value the 3D library recreated each update.",
-      "Motion verified frame by frame — a clean console isn't proof that motion works.",
+      "Automated tests for each product canvas and flow.",
+      "Every flow walked end to end with real orders and gift-card payments.",
+      "Old page URLs deep-link into the right shell screen, so nothing bookmarked breaks.",
     ],
     outcome: [
-      "Low-end devices went from 28 to 61 FPS; the 3D now loads a fraction of the weight.",
-      "The pack opening works on the live site again, on one shared canvas.",
-      "A tiering and motion approach reused across the products — and on this portfolio's own hero card.",
+      "People browse and buy three products from inside the platform, each in its own look.",
+      "One checkout and one set of payment screens across the ecosystem.",
+      "A pattern the team extends: new products plug in as canvases.",
     ],
     next: [
-      "Automate the asset pipeline (KTX2, meshopt) in CI with size checks on every pull request.",
-      "Real-user monitoring of FPS and Core Web Vitals per tier.",
-      "Set tier thresholds from that data instead of rules of thumb.",
+      "Rebuild the remaining legacy pages on the shell and retire the old routes.",
+      "Bring the shell to phones once the desktop layouts settle.",
+      "Contract tests on the proxy's allow-listed calls.",
     ],
-    lesson: "3D in production is an engineering problem first: budgets, tiers and fallbacks are what let the magic ship.",
-    figures: [
-      { after: "decisions", figure: "tier-ladder", caption: "Quality tiers, chosen by GPU. This portfolio's hero card uses the same approach." },
-      { after: "outcome", figure: "asset-bars", caption: "Asset weight before and after, to scale." },
-    ],
+    lesson: "Draw the ownership lines first — who prices, who charges, who styles — and the architecture follows.",
+    figures: [{ after: "decisions", figure: "shell-map", caption: "The shell owns navigation, cart and money. Products own their canvas and their prices, reached through an allow-listed proxy." }],
   },
   {
     slug: "design-architecture",
-    index: "04",
+    index: "06",
+    where: "Etta Global",
+    featured: false,
     title: "Re-skin everything, break nothing",
     emphasis: "break nothing",
     summary:
@@ -297,3 +434,4 @@ export const caseStudies: CaseStudy[] = [
 ];
 
 export const getCaseStudy = (slug: string) => caseStudies.find((c) => c.slug === slug);
+export const featuredCaseStudies = caseStudies.filter((c) => c.featured);

@@ -7,9 +7,9 @@ export const card = {
   name: "Arun P M",
   role: "Frontend Architect · Senior Engineer & Lead",
   stats: [
-    { value: "4", label: "Products" },
-    { value: "E2E", label: "Ownership" },
-    { value: "3D", label: "In production" },
+    { value: "Web", label: "React · Next" },
+    { value: "Native", label: "Flutter" },
+    { value: "3D", label: "WebGL" },
   ],
   footerLeft: "Bangalore, IN",
   footerRight: "Since 2023",

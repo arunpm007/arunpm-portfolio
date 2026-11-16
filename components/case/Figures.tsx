@@ -227,6 +227,51 @@ function ShellMap() {
   );
 }
 
+function AppLayers() {
+  const layers = [
+    { name: "UI", note: "Flutter widgets · screens · navigation" },
+    { name: "Domain", note: "use cases · business rules · testable without UI" },
+    { name: "Data", note: "repositories · local cache · API clients" },
+  ];
+  return (
+    <div className="grid gap-4 sm:grid-cols-[1fr_auto]">
+      <div className="space-y-2">
+        {layers.map((l) => (
+          <div key={l.name} className="flex items-center justify-between gap-4 border hairline bg-bg/40 px-5 py-4">
+            <span className="display text-2xl">{l.name}</span>
+            <span className="text-right font-mono text-[0.7rem] uppercase tracking-[0.1em] text-muted">{l.note}</span>
+          </div>
+        ))}
+      </div>
+      <div className="flex items-center justify-center border border-signal bg-signal px-5 py-4 text-bg sm:[writing-mode:vertical-rl]">
+        <span className="display text-2xl">Riverpod</span>
+      </div>
+    </div>
+  );
+}
+
+function AgentLoop() {
+  const steps = [
+    { who: "Person", text: "\u201cMy laptop is slow again\u201d" },
+    { who: "Model", text: "Asks for tools: device details, repair history, known fixes" },
+    { who: "Code", text: "Checks the role · validates input · runs the tools", signal: true },
+    { who: "Model", text: "Spots a repeat problem → asks to raise a ticket" },
+    { who: "Code", text: "Checks again · creates the ticket · streams each step", signal: true },
+    { who: "Person", text: "Plain answer + chips showing every action taken" },
+  ];
+  return (
+    <ol className="space-y-2">
+      {steps.map((s, i) => (
+        <li key={i} className={`grid grid-cols-[28px_90px_1fr] items-center gap-3 border px-4 py-3 ${s.signal ? "border-signal" : "hairline bg-bg/40"}`}>
+          <span className={`flex h-6 w-6 items-center justify-center font-mono text-[0.7rem] font-bold ${s.signal ? "bg-signal text-bg" : "bg-line text-fg"}`}>{i + 1}</span>
+          <span className={`label ${s.signal ? "!text-signal" : ""}`}>{s.who}</span>
+          <span className="text-sm">{s.text}</span>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 export default function CaseFigure({ figure }: { figure: Figure }) {
   switch (figure) {
     case "sso-flow":
@@ -241,5 +286,9 @@ export default function CaseFigure({ figure }: { figure: Figure }) {
       return <LayerStack />;
     case "shell-map":
       return <ShellMap />;
+    case "app-layers":
+      return <AppLayers />;
+    case "agent-loop":
+      return <AgentLoop />;
   }
 }

@@ -1,5 +1,5 @@
-import { CountUp, ScrubText } from "../motion/Motion";
-import { scope, statement } from "@/lib/site";
+import { ScrubText } from "../motion/Motion";
+import { statement, strengths } from "@/lib/site";
 
 /** The one paragraph that matters, lit word by word as you scroll, then proof. */
 export default function Statement() {
@@ -10,17 +10,15 @@ export default function Statement() {
         className="display max-w-6xl text-[clamp(2.4rem,6vw,5.6rem)] !leading-[0.98]"
       />
 
-      <p className="label mt-24">Scope I own</p>
-      <dl className="mt-4 grid grid-cols-2 border-t hairline lg:grid-cols-4">
-        {scope.map((m, i) => (
+      <p className="label mt-24">What I bring</p>
+      <dl className="mt-4 grid border-t hairline sm:grid-cols-2 lg:grid-cols-4">
+        {strengths.map((m, i) => (
           <div
-            key={m.label}
-            className={`flex flex-col-reverse py-8 pr-4 ${i % 2 === 1 ? "border-l hairline pl-5" : ""} ${i === 2 ? "hairline lg:border-l lg:pl-5" : ""} ${i < 2 ? "border-b hairline lg:border-b-0" : ""}`}
+            key={m.word}
+            className={`border-b hairline py-8 pr-5 sm:[&:nth-child(even)]:border-l sm:[&:nth-child(even)]:pl-5 lg:border-b-0 lg:[&:not(:first-child)]:border-l lg:[&:not(:first-child)]:pl-5`}
           >
-            <dt className="mt-3 max-w-[16rem] leading-snug text-muted">{m.label}</dt>
-            <dd className={`display whitespace-nowrap text-[clamp(2.8rem,5.4vw,5.4rem)] ${i === 0 ? "text-signal" : ""}`}>
-              <CountUp value={m.value} />
-            </dd>
+            <dt className={`display text-[clamp(2.4rem,3.6vw,3.6rem)] ${i === 0 ? "text-signal" : ""}`}>{m.word}</dt>
+            <dd className="mt-3 max-w-[18rem] leading-relaxed text-muted">{m.line}</dd>
           </div>
         ))}
       </dl>

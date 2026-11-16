@@ -1,4 +1,5 @@
 import SectionHeader from "./SectionHeader";
+import Link from "next/link";
 import Reveal from "../Reveal";
 import { experience } from "@/lib/site";
 
@@ -39,6 +40,16 @@ export default function Experience() {
                 ))}
               </ul>
               <p className="label mt-6 leading-6">{job.stack}</p>
+              {job.links && (
+                <div className="mt-6 flex flex-wrap items-center gap-2">
+                  <span className="label mr-1">Deep dives</span>
+                  {job.links.map((l) => (
+                    <Link key={l.href} href={l.href} className="btn !min-h-9 !px-3 !text-[0.68rem] hover:!border-signal hover:text-signal">
+                      {l.label} →
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
           </Reveal>
         ))}

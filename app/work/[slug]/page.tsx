@@ -102,7 +102,9 @@ export default async function CaseStudyPage({ params }: Params) {
   if (!cs) notFound();
 
   const [a, b] = cs.title.split(cs.emphasis);
-  const next = caseStudies[(caseStudies.indexOf(cs) + 1) % caseStudies.length];
+  const at = caseStudies.indexOf(cs);
+  const next = caseStudies[(at + 1) % caseStudies.length];
+  const prev = caseStudies[(at - 1 + caseStudies.length) % caseStudies.length];
 
   return (
     <>
@@ -120,6 +122,7 @@ export default async function CaseStudyPage({ params }: Params) {
             <div className="mt-10 flex items-center gap-4">
               <span className="label !text-fg">Case study {cs.index}</span>
               <span className="h-px w-8 bg-signal" />
+              <span className="label !text-signal">{cs.where}</span>
             </div>
             <LineReveal as="h1" immediate className="display mt-6 max-w-6xl text-[clamp(3.2rem,9vw,8.5rem)]">
               {a}
@@ -201,6 +204,21 @@ export default async function CaseStudyPage({ params }: Params) {
                 →
               </span>
             </Link>
+            {/* Case-study navigation: previous · all · next */}
+            <nav aria-label="Case study navigation" className="mt-14 grid gap-3 sm:grid-cols-3">
+              <Link href={`/work/${prev.slug}`} className="group flex min-h-16 flex-col justify-center border hairline px-5 py-3 transition-colors hover:border-fg/40">
+                <span className="label">← Previous</span>
+                <span className="mt-1 truncate font-medium transition-colors group-hover:text-signal">{prev.title}</span>
+              </Link>
+              <Link href="/#work" className="group flex min-h-16 items-center justify-center gap-3 border border-signal bg-signal px-5 py-3 text-bg transition-colors hover:bg-fg hover:border-fg">
+                <span aria-hidden="true">▦</span>
+                <span className="font-mono text-[0.78rem] font-semibold uppercase tracking-[0.1em]">All case studies</span>
+              </Link>
+              <Link href={`/work/${next.slug}`} className="group flex min-h-16 flex-col items-end justify-center border hairline px-5 py-3 text-right transition-colors hover:border-fg/40">
+                <span className="label">Next →</span>
+                <span className="mt-1 max-w-full truncate font-medium transition-colors group-hover:text-signal">{next.title}</span>
+              </Link>
+            </nav>
             <p className="mt-14 text-muted">
               Want the longer version?{" "}
               <a href={`mailto:${profile.email}`} className="text-fg underline decoration-signal decoration-2 underline-offset-4">

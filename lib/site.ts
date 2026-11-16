@@ -17,108 +17,117 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/arun-p-m-3a9005225/",
   resumeUrl: "/arunpm_resume.pdf",
   intro:
-    "I architect frontends that carry a business — the platform, identity, commerce and real-time 3D of a four-product ecosystem, and the design system that holds it together.",
+    "I build interfaces that feel effortless and hold up at scale — design systems, real-time 3D and native mobile apps. And when a product needs it, I go full-stack to see it through.",
 };
 
 /** Three facts in the hero's bottom bar — the 10-second read. */
 export const heroFacts = [
   { label: "Role", value: "Senior Frontend Engineer & Lead" },
-  { label: "Owns", value: "Platform · Identity · Commerce · 3D · Design systems" },
+  { label: "Craft", value: "UI architecture · Design systems · 3D · Mobile" },
   { label: "Status", value: "Open to senior & lead roles" },
 ];
 
 /** The scroll statement. **Bold** words get the signal colour. */
 export const statement =
-  "I don't ship screens. I architect **the systems behind them** — one shell that sells four products, one identity across all of them, real-time 3D in production, and a design system that re-skins everything **without breaking a page**.";
+  "Great frontend is **invisible engineering**. I care most about the parts people never see — architecture, accessibility, performance, security — so the parts they do see feel **effortless on any screen**.";
 
-/** Scope, not vanity metrics: what a senior owns. */
-export const scope = [
-  { value: "4", label: "Products in one ecosystem — architected end to end" },
-  { value: "80+", label: "Legacy screens migrated onto one design system, no freeze" },
-  { value: "3", label: "Surfaces shipped: web, mobile web, native iOS + Android" },
-  { value: "UI→API", label: "Ownership from interface to auth, payments and deploys" },
+/** What I bring — four strengths, each true across every job and project. */
+export const strengths = [
+  { word: "Architecture", line: "Systems teams extend instead of rewrite — clear boundaries, typed data, migrations that never stop shipping." },
+  { word: "Craft", line: "Motion, 3D and the last 10% of detail that makes a product feel premium — without costing performance." },
+  { word: "Range", line: "React and Next.js on the web, Flutter on iOS and Android, WebGL for 3D, LLM agents for AI." },
+  { word: "Ownership", line: "Frontend first, full-stack when it matters — auth, payments and APIs included, through to production." },
 ];
 
 export type Capability = {
-  id: "platform" | "identity" | "commerce" | "3d" | "systems" | "mobile";
+  id: "architecture" | "systems" | "3d" | "mobile" | "fullstack" | "ai";
   title: string;
   claim: string;
   built: string[];
+  /** Where this was proven — across jobs and own projects. */
+  evidence: string[];
   stack: string;
   link?: { href: string; label: string };
 };
 
 export const capabilities: Capability[] = [
   {
-    id: "platform",
-    title: "Platform architecture",
-    claim: "One shell that hosts four products and sells each in place — without blurring who owns what.",
+    id: "systems",
+    title: "Design systems & UI",
+    claim: "Token-driven systems that theme any brand, with accessibility built into the foundation.",
     built: [
-      "A registry of product canvases, each in its own look, inside one platform shell",
-      "Products keep pricing authority behind an allow-listed same-origin proxy",
-      "Six shared step-flows: shop, inventory, pay, security, devices, orders",
+      "Layered tokens → materials → primitives; screens own zero visual values",
+      "Runtime theming per brand, dark mode, WCAG AA baseline",
+      "Component APIs, a live style guide and design review loops",
     ],
-    stack: "Next.js · React · TypeScript · Route handlers",
-    link: { href: "/work/platform-shell", label: "Case study" },
+    evidence: ["Etta Global", "This portfolio"],
+    stack: "Design tokens · CSS variables · Tailwind · MUI",
   },
   {
-    id: "identity",
-    title: "Identity & security",
-    claim: "One identity across the ecosystem, with sessions people can see and end.",
+    id: "architecture",
+    title: "Frontend architecture",
+    claim: "Application structure that scales with the team: clear module boundaries, typed data and incremental migrations.",
     built: [
-      "Single sign-on on OAuth 2.0 / OIDC with MFA and per-product branding",
-      "Device sessions with remote sign-out and fail-closed revocation",
-      "Step-up re-authentication, new-device alerts, and a platform security review",
+      "Multi-product app shells with registries and clear ownership boundaries",
+      "Server vs client vs URL state, typed end to end in TypeScript",
+      "Migrations behind compatibility layers, so nothing stops shipping",
     ],
-    stack: "OAuth 2.0 / OIDC · NestJS · PostgreSQL · Redis",
-    link: { href: "/work/identity", label: "Case study" },
-  },
-  {
-    id: "commerce",
-    title: "Commerce & wallets",
-    claim: "Checkout that can't be gamed, and on-chain actions people can trust.",
-    built: [
-      "Server-authoritative pricing; paid items settle once and are never re-sold",
-      "Provisional orders, gift cards and payment sessions across products",
-      "Browser-wallet integration: discovery, lock states, picker, minting, transfers",
-    ],
-    stack: "Stripe · Payment sessions · Web3 wallet APIs",
+    evidence: ["Etta Global", "AnimeMind"],
+    stack: "React · Next.js · TypeScript",
   },
   {
     id: "3d",
     title: "Real-time 3D & motion",
-    claim: "Cinematic 3D that ships to production — and still runs on a mid-range phone.",
+    claim: "Cinematic WebGL and motion that ship to production and still run on a mid-range phone.",
     built: [
-      "A pack opening on one shared WebGL canvas, holographic card frames, a type-to-mint hero",
-      "A company site told as a Three.js film, with its own swipe mode for phones",
-      "GPU-aware quality tiers and an asset pipeline that keeps it fast",
+      "Custom GLSL shaders, shared-canvas scenes, holographic and pack-opening effects",
+      "GPU-aware quality tiers and asset budgets",
+      "Scroll and route choreography with GSAP — always with a reduced-motion path",
     ],
+    evidence: ["Etta Global", "Material Studio", "This portfolio"],
     stack: "Three.js · React Three Fiber · GLSL · GSAP",
     link: { href: "/work/realtime-3d", label: "Case study" },
   },
   {
-    id: "systems",
-    title: "Design systems",
-    claim: "A layered design architecture that re-skins a platform and migrates its legacy screens one at a time.",
+    id: "mobile",
+    title: "Mobile & native apps",
+    claim: "Native iOS and Android apps owned end to end, and mobile web designed for thumbs.",
     built: [
-      "Skins → tokens → materials → primitives; screens own zero visual values",
-      "A compatibility layer kept 80+ legacy screens running during the move",
-      "Runtime per-product theming, a WCAG AA baseline and a live style guide",
+      "Sole engineer of an enterprise CRM app — architecture to store releases",
+      "Offline-capable data, background push, deep links, camera scanning, geo-fencing",
+      "Touch-first mobile web: swipe navigation, bottom sheets, safe areas",
     ],
-    stack: "Design tokens · CSS variables · React · MUI interop",
-    link: { href: "/work/design-architecture", label: "Case study" },
+    evidence: ["Vtiger CRM", "Etta Global", "Coorg Car Point"],
+    stack: "Flutter · Dart · Riverpod · Mobile web",
+    link: { href: "/work/native-crm", label: "Case study" },
   },
   {
-    id: "mobile",
-    title: "Mobile & cross-platform",
-    claim: "Native and mobile web, designed for thumbs — not a shrunken desktop.",
+    id: "ai",
+    title: "AI-powered products",
+    claim: "LLM features engineered like real software: tools, permissions and validation in code, not in the prompt.",
     built: [
-      "Sole engineer of an enterprise CRM app on iOS and Android",
-      "Touch-first mobile versions of the collectibles products",
-      "Phone-first interaction models: swipe steps, bottom sheets, safe areas",
+      "Agent loops with tool use, streamed to the UI step by step",
+      "Role-based permissions enforced in code; every tool call validated",
+      "Model output treated as untrusted input, with graceful failure",
     ],
-    stack: "Flutter · Riverpod · Mobile web",
+    evidence: ["IT Support Desk"],
+    stack: "Claude API · Tool use · Zod · Next.js",
+    link: { href: "/work/ai-helpdesk", label: "Case study" },
   },
+  {
+    id: "fullstack",
+    title: "Full-stack depth",
+    claim: "A frontend engineer who can own the backend it depends on — auth, payments and APIs, done securely.",
+    built: [
+      "Single sign-on on OAuth 2.0 / OIDC, MFA, device sessions, step-up auth",
+      "Server-authoritative checkout and payment flows",
+      "REST APIs, PostgreSQL, Redis and row-level security",
+    ],
+    evidence: ["Etta Global", "AnimeMind", "Coorg Car Point"],
+    stack: "Node · NestJS · PostgreSQL · Redis · Supabase",
+    link: { href: "/work/identity", label: "Case study" },
+  },
+
 ];
 
 export type Experience = {
@@ -127,6 +136,8 @@ export type Experience = {
   period: string;
   lines: string[];
   stack: string;
+  /** Deep dives into work done here. */
+  links?: { href: string; label: string }[];
 };
 
 export const experience: Experience[] = [
@@ -135,11 +146,17 @@ export const experience: Experience[] = [
     role: "Senior Lead Engineer, Frontend · UI/UX & Frontend Team Lead",
     period: "2026 — Now",
     lines: [
-      "Own the frontend architecture of a four-product ecosystem — the platform shell, single sign-on, commerce, real-time 3D and the design system.",
-      "Lead frontend and UI/UX for a cross-functional team of engineers and designers: architecture standards, design and code reviews, and product decisions turned into shipped flows.",
-      "Build the hard parts hands-on — session security, wallet integration, WebGL, and the APIs and deploys behind them.",
+      "Own the frontend architecture of a four-product ecosystem — identity, payments, gaming and digital collectibles — including the platform shell that sells every product in place.",
+      "Lead frontend and UI/UX for a cross-functional team: architecture standards, design and code reviews, and product decisions turned into shipped flows.",
+      "Built single sign-on and session security, real-time 3D, wallet integration and a layered design system that migrated 80+ legacy screens without a freeze.",
     ],
     stack: "Next.js · React · TypeScript · Three.js / R3F · NestJS · PostgreSQL · Redis",
+    links: [
+      { href: "/work/platform-shell", label: "Platform shell" },
+      { href: "/work/design-architecture", label: "Design architecture" },
+      { href: "/work/identity", label: "Identity" },
+      { href: "/work/realtime-3d", label: "Real-time 3D" },
+    ],
   },
   {
     company: "Vtiger CRM",
@@ -151,6 +168,7 @@ export const experience: Experience[] = [
       "Shipped field features: geo-fenced check-in, deep links, document scanning and background push.",
     ],
     stack: "Flutter · Dart · Riverpod · Firebase",
+    links: [{ href: "/work/native-crm", label: "Native CRM app" }],
   },
 ];
 
@@ -164,18 +182,21 @@ export type Project = {
   repo?: string;
   /** Screenshots in /public/projects — first one is the card image. */
   images?: string[];
+  /** "theme": the hover image is the same screen in dark mode — label it. */
+  hoverHint?: "theme";
 };
 
 export const projects: Project[] = [
   {
     title: "IT Support Desk",
     blurb:
-      "An AI helpdesk agent for small offices. Staff describe a problem in their own words; the agent checks their computer's repair history, suggests a self-help fix, and raises a ticket when a problem keeps coming back. Built on Claude tool use, with permissions enforced in code rather than the prompt and every tool call validated with Zod.",
+      "An AI helpdesk for small offices. The assistant streams every step it takes — looking up devices, reading repair history, raising tickets — while an IT dashboard turns fleet data into AI-written insights. Permissions are enforced in code, never in the prompt.",
     tags: ["Next.js 16", "TypeScript", "Claude API", "Tool use", "Zod", "Tailwind CSS"],
     status: "Open source",
     featured: true,
     repo: "https://github.com/arunpm007/it-support-desk",
-    images: ["/projects/it-support-desk-1.png", "/projects/it-support-desk-2.png"],
+    images: ["/projects/it-support-desk-light.jpg", "/projects/it-support-desk-dark.jpg"],
+    hoverHint: "theme",
   },
   {
     title: "AnimeMind",
@@ -221,5 +242,5 @@ export const nav = [
 export const lookingFor = [
   "Senior frontend, frontend architect or lead roles",
   "Product teams where design quality and engineering rigour both matter",
-  "Ownership across platform, identity, commerce and real-time 3D",
+  "Products where design quality, engineering rigour and ownership all matter",
 ];

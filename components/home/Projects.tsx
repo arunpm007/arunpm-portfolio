@@ -58,6 +58,12 @@ function ProjectCard({ project }: { project: Project }) {
         <span className="absolute left-4 top-4 bg-bg/85 px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-[0.12em]">
           {project.status}
         </span>
+        {project.hoverHint === "theme" && (
+          <span className="absolute right-4 top-4 flex items-center gap-1.5 bg-bg/85 px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-[0.12em]">
+            <span className="group-hover:hidden">☀ Light · hover for dark</span>
+            <span className="hidden text-signal group-hover:inline">☾ Dark mode</span>
+          </span>
+        )}
       </a>
       <div className="mt-6 flex items-start justify-between gap-6">
         <h3 className="display text-4xl">{project.title}</h3>
