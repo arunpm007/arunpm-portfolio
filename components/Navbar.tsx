@@ -7,7 +7,6 @@ import { nav } from "@/lib/site";
 export default function Navbar({ home = true }: { home?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState("");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -16,100 +15,70 @@ export default function Navbar({ home = true }: { home?: boolean }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Highlight the section currently in view.
   useEffect(() => {
-    if (!home) return;
-    const sections = nav
-      .map((n) => document.querySelector<HTMLElement>(n.href))
-      .filter((s): s is HTMLElement => !!s);
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(`#${e.target.id}`);
-        });
-      },
-      { rootMargin: "-45% 0px -50% 0px" }
-    );
-    sections.forEach((s) => io.observe(s));
-    return () => io.disconnect();
-  }, [home]);
+    document.documentElement.style.overflow = open ? "hidden" : "";
+  }, [open]);
 
   const href = (h: string) => (home ? h : `/${h}`);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4">
-      <nav
-        aria-label="Main"
-        className={`relative flex w-full max-w-6xl items-center justify-between rounded-full py-2 pl-5 pr-2 transition-all duration-300 ${
-          scrolled || open
-            ? "border hairline bg-surface/75 backdrop-blur-xl"
-            : "border border-transparent"
-        }`}
-      >
-        <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2" aria-label="Arun P M — home">
-          <span className="font-display text-2xl italic leading-none">AP</span>
-          <span className="label hidden sm:inline">Arun P M</span>
+    <header
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ${
+        scrolled || open ? "hairline bg-bg/90 backdrop-blur-md" : "border-transparent"
+      }`}
+    >
+      <nav aria-label="Main" className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-4 sm:px-6">
+        <Link href="/" onClick={() => setOpen(false)} className="display text-2xl" aria-label="Arun P M — home">
+          Arun P M<span className="text-signal">.</span>
         </Link>
 
-        <div className="hidden items-center gap-1 md:flex">
+        <div className="hidden items-center gap-8 lg:flex">
           {nav.map((item) => (
-            <a
-              key={item.href}
-              href={href(item.href)}
-              className={`relative rounded-full px-3.5 py-2 text-sm transition-colors ${
-                active === item.href ? "text-fg" : "text-muted hover:text-fg"
-              }`}
-            >
+            <a key={item.href} href={href(item.href)} className="label transition-colors hover:text-fg">
               {item.label}
-              {active === item.href && (
-                <span className="absolute inset-x-3.5 -bottom-0.5 h-px [background:var(--holo)]" />
-              )}
             </a>
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
-          <Link
-            href="/resume"
-            className="btn-primary hidden min-h-10 items-center rounded-full px-5 text-sm font-semibold sm:inline-flex"
-          >
-            <span className="relative z-10">Résumé</span>
+        <div className="flex items-center gap-3">
+          <span className="label hidden items-center gap-2 xl:inline-flex">
+            <span className="h-1.5 w-1.5 bg-signal" /> Available
+          </span>
+          <Link href="/resume" className="btn btn-signal hidden !min-h-10 sm:inline-flex">
+            Résumé
           </Link>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
-            className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border hairline md:hidden"
+            className="flex h-11 w-11 cursor-pointer items-center justify-center border hairline lg:hidden"
           >
-            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden="true">
-              {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 8h16M4 16h16" />}
+            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M3 8h18M3 16h18" />}
             </svg>
           </button>
         </div>
-
-        {open && (
-          <div className="absolute left-0 right-0 top-[calc(100%+8px)] rounded-3xl border hairline bg-surface/95 p-3 shadow-2xl backdrop-blur-xl md:hidden">
-            {nav.map((item) => (
-              <a
-                key={item.href}
-                href={href(item.href)}
-                onClick={() => setOpen(false)}
-                className="block rounded-2xl px-4 py-3 text-muted transition-colors hover:bg-surface-2 hover:text-fg"
-              >
-                {item.label}
-              </a>
-            ))}
-            <Link
-              href="/resume"
-              onClick={() => setOpen(false)}
-              className="btn-primary mt-1 block rounded-2xl px-4 py-3 text-center font-semibold"
-            >
-              <span className="relative z-10">Résumé</span>
-            </Link>
-          </div>
-        )}
       </nav>
+
+      {open && (
+        <div className="fixed inset-x-0 bottom-0 top-16 flex flex-col bg-bg px-4 pb-10 pt-6 lg:hidden">
+          {nav.map((item, i) => (
+            <a
+              key={item.href}
+              href={href(item.href)}
+              onClick={() => setOpen(false)}
+              className="display flex items-baseline gap-4 border-b hairline py-4 text-5xl"
+            >
+              <span className="label">0{i + 1}</span>
+              {item.label}
+            </a>
+          ))}
+          <Link href="/resume" onClick={() => setOpen(false)} className="btn btn-signal mt-auto justify-center">
+            Résumé
+          </Link>
+        </div>
+      )}
     </header>
   );
 }

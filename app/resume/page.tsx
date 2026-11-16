@@ -13,7 +13,7 @@ export default function ResumePage() {
   return (
     <main className="min-h-screen">
       {/* Top bar */}
-      <header className="sticky top-0 z-50 border-b border-border bg-bg/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b hairline bg-bg/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <Link
             href="/"
@@ -40,14 +40,14 @@ export default function ResumePage() {
               href={profile.resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="cursor-pointer rounded-full border border-border bg-surface/50 px-4 py-2 text-sm text-fg transition-colors hover:border-fg/40"
+              className="btn cursor-pointer"
             >
               Open in new tab
             </a>
             <a
               href={profile.resumeUrl}
               download={downloadName}
-              className="btn-primary inline-flex cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold"
+              className="btn btn-signal cursor-pointer"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -69,7 +69,7 @@ export default function ResumePage() {
 
       {/* PDF viewer */}
       <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8">
-        <div className="overflow-hidden rounded-2xl border border-border bg-surface">
+        <div className="overflow-hidden border hairline bg-surface">
           <object
             data={`${profile.resumeUrl}#view=FitH`}
             type="application/pdf"
@@ -84,7 +84,7 @@ export default function ResumePage() {
               <a
                 href={profile.resumeUrl}
                 download={downloadName}
-                className="btn-primary rounded-full px-6 py-3 text-sm font-semibold"
+                className="btn btn-signal"
               >
                 Download résumé (PDF)
               </a>
@@ -97,7 +97,7 @@ export default function ResumePage() {
           <a
             href={profile.resumeUrl}
             download={downloadName}
-            className="text-fg underline decoration-fg/30 underline-offset-4 hover:decoration-fg"
+            className="text-fg underline decoration-signal decoration-2 underline-offset-4"
           >
             Download
           </a>{" "}
@@ -106,7 +106,7 @@ export default function ResumePage() {
             href={profile.resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-fg underline decoration-fg/30 underline-offset-4 hover:decoration-fg"
+            className="text-fg underline decoration-signal decoration-2 underline-offset-4"
           >
             open in a new tab
           </a>

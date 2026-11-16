@@ -1,31 +1,14 @@
-// Diagrams for the case studies. Plain SVG drawn with the site tokens so
-// they stay sharp at any size and need no image files.
+// Diagrams for the case studies. Plain SVG/HTML drawn with the site tokens
+// so they stay sharp at any size and need no image files.
 
 import type { Figure } from "@/lib/case-studies";
 
 const FG = "var(--color-fg)";
 const MUTED = "var(--color-muted)";
-const FAINT = "var(--color-faint)";
-const LINE = "var(--color-border)";
+const LINE = "var(--color-line)";
 const SURFACE = "var(--color-surface-2)";
-
-function HoloDefs({ id }: { id: string }) {
-  return (
-    <defs>
-      <linearGradient id={id} x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stopColor="#9ff2d8" />
-        <stop offset="0.35" stopColor="#a9c4ff" />
-        <stop offset="0.7" stopColor="#d8b4ff" />
-        <stop offset="1" stopColor="#ffc7a6" />
-      </linearGradient>
-      <marker id={`${id}-arrow`} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-        <path d="M0 0L10 5L0 10z" fill={MUTED} />
-      </marker>
-    </defs>
-  );
-}
-
-const mono = { fontFamily: "var(--font-mono)", letterSpacing: "0.08em" } as const;
+const SIGNAL = "var(--color-signal)";
+const mono = { fontFamily: "var(--font-mono)", letterSpacing: "0.06em" } as const;
 const sans = { fontFamily: "var(--font-sans)" } as const;
 
 /** Sequence diagram: lanes + numbered messages. */
@@ -44,11 +27,17 @@ function Sequence({
   const laneX = (i: number) => 90 + i * ((W - 180) / (lanes.length - 1));
   return (
     <svg viewBox={`0 0 ${W} ${height}`} className="h-auto w-full" role="img" aria-label={steps.map((s, i) => `${i + 1}. ${s.label}`).join(". ")}>
-      <HoloDefs id={id} />
+      <defs>
+        <marker id={`${id}-arrow`} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0L10 5L0 10z" fill={MUTED} />
+        </marker>
+      </defs>
       {lanes.map((lane, i) => (
         <g key={lane}>
-          <rect x={laneX(i) - 72} y={14} width={144} height={40} rx={20} fill={SURFACE} stroke={i === 1 ? `url(#${id})` : LINE} strokeWidth={i === 1 ? 1.5 : 1} />
-          <text x={laneX(i)} y={39} textAnchor="middle" fill={FG} fontSize={14} style={sans}>{lane}</text>
+          <rect x={laneX(i) - 72} y={14} width={144} height={40} fill={i === 1 ? SIGNAL : SURFACE} stroke={i === 1 ? SIGNAL : LINE} />
+          <text x={laneX(i)} y={39} textAnchor="middle" fill={i === 1 ? "#0b0b0c" : FG} fontSize={13} fontWeight={i === 1 ? 700 : 400} style={mono}>
+            {lane.toUpperCase()}
+          </text>
           <line x1={laneX(i)} y1={58} x2={laneX(i)} y2={height - 10} stroke={LINE} strokeDasharray="3 5" />
         </g>
       ))}
@@ -58,6 +47,7 @@ function Sequence({
         const x2 = laneX(s.to);
         const self = s.from === s.to;
         const mid = (x1 + x2) / 2;
+        const bx = self ? x1 - 16 : Math.min(x1, x2) - 16;
         return (
           <g key={i}>
             {self ? (
@@ -65,15 +55,15 @@ function Sequence({
             ) : (
               <line x1={x1} y1={y} x2={x2 + (x2 > x1 ? -4 : 4)} y2={y} stroke={MUTED} strokeWidth={1.2} markerEnd={`url(#${id}-arrow)`} />
             )}
-            <circle cx={self ? x1 - 16 : Math.min(x1, x2) - 16} cy={y} r={10} fill={`url(#${id})`} />
-            <text x={self ? x1 - 16 : Math.min(x1, x2) - 16} y={y + 4} textAnchor="middle" fontSize={11} fill="#0c0c0e" style={{ ...mono, fontWeight: 600 }}>
+            <rect x={bx - 10} y={y - 10} width={20} height={20} fill={SIGNAL} />
+            <text x={bx} y={y + 4} textAnchor="middle" fontSize={11} fill="#0b0b0c" style={{ ...mono, fontWeight: 700 }}>
               {i + 1}
             </text>
             <text x={self ? x1 + 44 : mid} y={y - 9} textAnchor={self ? "start" : "middle"} fontSize={13} fill={FG} style={sans}>
               {s.label}
             </text>
             {s.note && (
-              <text x={self ? x1 + 44 : mid} y={y + 18} textAnchor={self ? "start" : "middle"} fontSize={10.5} fill={FAINT} style={mono}>
+              <text x={self ? x1 + 44 : mid} y={y + 18} textAnchor={self ? "start" : "middle"} fontSize={10.5} fill={MUTED} style={mono}>
                 {s.note.toUpperCase()}
               </text>
             )}
@@ -132,21 +122,19 @@ function AssetBars() {
           <div key={r.label}>
             <div className="flex items-baseline justify-between">
               <p className="label">{r.label}</p>
-              <p className="font-display text-3xl">−{pct}%</p>
+              <p className="display text-5xl text-signal">−{pct}%</p>
             </div>
             <div className="mt-4 space-y-2">
               <div className="flex items-center gap-3">
                 <span className="label w-14 shrink-0 !text-[0.6rem]">Before</span>
-                <div className="h-8 flex-1">
-                  <div className="flex h-full w-full items-center justify-end rounded-md bg-fg/12 px-3">
-                    <span className="label !text-fg">{r.before} {r.unit}</span>
-                  </div>
+                <div className="flex h-9 flex-1 items-center justify-end bg-fg/12 px-3">
+                  <span className="label !text-fg">{r.before} {r.unit}</span>
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 <span className="label w-14 shrink-0 !text-[0.6rem]">After</span>
-                <div className="flex h-8 flex-1 items-center gap-3">
-                  <div className="h-full rounded-md [background:var(--holo)]" style={{ width: `${Math.max((r.after / r.before) * 100, 1.5)}%` }} />
+                <div className="flex h-9 flex-1 items-center gap-3">
+                  <div className="h-full bg-signal" style={{ width: `${Math.max((r.after / r.before) * 100, 1.5)}%` }} />
                   <span className="label !text-fg">{r.after} {r.unit}</span>
                 </div>
               </div>
@@ -165,14 +153,76 @@ function TierLadder() {
     { name: "Low", gpu: "Software renderer · reduced motion · no WebGL", gets: "Static card in HTML + CSS" },
   ];
   return (
-    <div className="divide-y divide-border border-y hairline">
+    <div className="border-y hairline">
       {tiers.map((t, i) => (
-        <div key={t.name} className="grid gap-2 py-5 sm:grid-cols-[120px_1fr_1fr] sm:gap-6">
-          <p className="font-display text-3xl italic" style={{ opacity: 1 - i * 0.22 }}>{t.name}</p>
+        <div key={t.name} className={`grid gap-2 py-5 sm:grid-cols-[120px_1fr_1fr] sm:gap-6 ${i > 0 ? "border-t hairline" : ""}`}>
+          <p className={`display text-4xl ${i === 0 ? "text-signal" : ""}`}>{t.name}</p>
           <p className="text-muted">{t.gpu}</p>
           <p>{t.gets}</p>
         </div>
       ))}
+    </div>
+  );
+}
+
+function LayerStack() {
+  const layers = [
+    { name: "Screens", note: "compose primitives · own zero visual values" },
+    { name: "Primitives", note: "Panel · Button · Input · Dialog …" },
+    { name: "Materials", note: "reusable surface & depth recipes" },
+    { name: "Tokens", note: "CSS variables emitted by a provider" },
+    { name: "Skin", note: "one object — swap it, everything follows", signal: true },
+  ];
+  return (
+    <div className="space-y-2">
+      {layers.map((l, i) => (
+        <div
+          key={l.name}
+          className={`flex items-center justify-between gap-4 border px-5 py-4 ${l.signal ? "border-signal bg-signal text-bg" : "hairline bg-bg/40"}`}
+          style={{ marginInline: `${i * 2.5}%` }}
+        >
+          <span className="display text-2xl">{l.name}</span>
+          <span className={`text-right font-mono text-[0.7rem] uppercase tracking-[0.1em] ${l.signal ? "text-bg/80" : "text-muted"}`}>{l.note}</span>
+        </div>
+      ))}
+      <p className="label pt-3">+ A compatibility skin points the legacy design module at the same tokens</p>
+    </div>
+  );
+}
+
+function ShellMap() {
+  const canvases = ["Identity product", "Card game", "Collectibles game"];
+  return (
+    <div className="space-y-4">
+      <div className="border border-signal p-4 sm:p-5">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <span className="label !text-signal">Platform shell</span>
+          <span className="font-mono text-[0.68rem] uppercase tracking-[0.1em] text-muted">navigation · cart · identity · money</span>
+        </div>
+        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+          {canvases.map((c) => (
+            <div key={c} className="border hairline bg-bg/50 p-4">
+              <p className="display text-xl">{c}</p>
+              <p className="mt-1 font-mono text-[0.62rem] uppercase tracking-[0.1em] text-muted">own canvas · own look</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-3 flex items-center justify-between gap-3 bg-signal px-4 py-3 text-bg">
+          <span className="display text-xl">Payment modal</span>
+          <span className="font-mono text-[0.62rem] uppercase tracking-[0.1em] text-bg/80">always the platform&apos;s look</span>
+        </div>
+      </div>
+      <div className="grid items-center gap-3 sm:grid-cols-[1fr_auto_1fr]">
+        <div className="border hairline p-4">
+          <p className="label">Same-origin proxy</p>
+          <p className="mt-1 text-sm text-muted">Allow-listed calls only · session stays httpOnly</p>
+        </div>
+        <span aria-hidden="true" className="display text-center text-3xl text-signal">⇄</span>
+        <div className="border hairline p-4">
+          <p className="label">Product APIs</p>
+          <p className="mt-1 text-sm text-muted">Own catalogue · own pricing · create the order</p>
+        </div>
+      </div>
     </div>
   );
 }
@@ -187,5 +237,9 @@ export default function CaseFigure({ figure }: { figure: Figure }) {
       return <AssetBars />;
     case "tier-ladder":
       return <TierLadder />;
+    case "layer-stack":
+      return <LayerStack />;
+    case "shell-map":
+      return <ShellMap />;
   }
 }

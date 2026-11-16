@@ -16,8 +16,8 @@ const vertexShader = /* glsl */ `
   }
 `;
 
-// Thin-film style iridescence: hue shifts with the card's tilt and position,
-// a soft glare follows the cursor, and the foil mask decides where it shows.
+// Brushed titanium: anisotropic streaks catch a moving highlight, foil areas
+// read as polished metal, and the edge carries a signal-orange light.
 const fragmentShader = /* glsl */ `
   uniform sampler2D uMap;
   uniform sampler2D uMask;
@@ -51,11 +51,15 @@ const fragmentShader = /* glsl */ `
     vec3 base = texture2D(uMap, vUv).rgb;
     float m = texture2D(uMask, vUv).r;
 
-    // Iridescent film
+    // Polished metal: a bright band sweeps across as the card tilts
     float n = noise(p * 5.0 + uTime * 0.05);
-    float phase = dot(p, vec2(1.15, 0.85)) + uTilt.x * 1.7 - uTilt.y * 1.3 + n * 0.22;
-    vec3 film = 0.5 + 0.5 * cos(6.28318 * (phase + vec3(0.0, 0.33, 0.67)));
-    film = mix(film, vec3(0.92, 0.9, 1.0), 0.28);        // pastel, not rainbow
+    float phase = dot(p, vec2(1.15, 0.85)) + uTilt.x * 1.7 - uTilt.y * 1.3 + n * 0.12;
+    float band = pow(0.5 + 0.5 * cos(6.28318 * phase), 3.0);
+    vec3 steel = mix(vec3(0.34, 0.34, 0.36), vec3(0.93, 0.91, 0.87), band);
+    // Brushed streaks along the card's width
+    float brush = noise(vec2(vUv.x * 2.0, vUv.y * 420.0)) * 0.12;
+    vec3 signal = vec3(1.0, 0.353, 0.122);
+    vec3 film = steel + brush;
 
     // Glare that follows the cursor
     vec2 lp = p - uLight;
@@ -69,12 +73,14 @@ const fragmentShader = /* glsl */ `
     vec3 col = base * (1.0 - m * 0.5);
     col += film * m * (0.42 + 0.75 * glare);
     col += vec3(glare) * 0.07;
-    col += film * sparkle * m * 0.9;
+    col += vec3(sparkle) * m * 0.35;
+    // A touch of signal orange where the glare is hottest
+    col += signal * m * glare * glare * 0.35;
 
-    // Holographic rim
-    float rim = smoothstep(-0.016, -0.004, d);
-    vec3 rimFilm = mix(film, vec3(0.95), 0.25);
-    col = mix(col, rimFilm, rim * 0.7);
+    // Signal-orange edge light, brighter on the side facing the light
+    float rim = smoothstep(-0.014, -0.003, d);
+    float rimLight = 0.55 + 0.45 * clamp(dot(normalize(p + 1e-4), normalize(uLight + 1e-4)), -1.0, 1.0);
+    col = mix(col, signal * (0.7 + 0.6 * rimLight), rim * 0.9);
 
     gl_FragColor = vec4(col, alpha);
   }

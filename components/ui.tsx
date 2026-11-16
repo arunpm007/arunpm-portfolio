@@ -6,37 +6,6 @@ const prefersReducedMotion = () =>
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/** Tracks the pointer inside an element as --mx / --my (for `.spot`). */
-export function Spotlight({
-  children,
-  className = "",
-  as: Tag = "div",
-}: {
-  children: React.ReactNode;
-  className?: string;
-  as?: "div" | "article" | "li";
-}) {
-  const ref = useRef<HTMLElement>(null);
-  const onMove = (e: React.PointerEvent) => {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    el.style.setProperty("--mx", `${e.clientX - r.left}px`);
-    el.style.setProperty("--my", `${e.clientY - r.top}px`);
-  };
-  const Comp = Tag as unknown as React.FC<{
-    ref: React.Ref<HTMLElement>;
-    className: string;
-    onPointerMove: (e: React.PointerEvent) => void;
-    children: React.ReactNode;
-  }>;
-  return (
-    <Comp ref={ref} className={`spot ${className}`} onPointerMove={onMove}>
-      {children}
-    </Comp>
-  );
-}
-
 /** A link that leans a few pixels toward the cursor. */
 export function Magnetic({
   children,
@@ -89,14 +58,14 @@ export function CopyEmail({ email }: { email: string }) {
           window.location.href = `mailto:${email}`;
         }
       }}
-      className="label inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border hairline px-5 transition-colors hover:border-fg/40 hover:text-fg"
+      className="btn cursor-pointer"
     >
       <span aria-live="polite">{copied ? "Copied ✓" : "Copy email"}</span>
     </button>
   );
 }
 
-/** Thin holo progress bar at the top of the page. */
+/** Thin signal progress bar at the top of the page. */
 export function ScrollProgress() {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -121,7 +90,7 @@ export function ScrollProgress() {
     <div
       ref={ref}
       aria-hidden="true"
-      className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-left [background:var(--holo)]"
+      className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-left bg-signal"
       style={{ transform: "scaleX(0)" }}
     />
   );

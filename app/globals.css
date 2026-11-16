@@ -1,47 +1,27 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------ */
-/*  Theme tokens (Tailwind v4 CSS-first)                               */
-/*  Warm ink + paper white. Colour only ever comes from the holo foil. */
+/*  "Industrial signal" — see DESIGN.md. Five tokens, one accent.      */
 /* ------------------------------------------------------------------ */
 @theme {
-  --color-bg: #0c0c0e;
-  --color-surface: #131316;
-  --color-surface-2: #1b1b1f;
-  --color-border: #2a2a30;
-  --color-fg: #edece7;
-  --color-muted: #a8a69f;
-  --color-faint: #8a887f;
+  --color-bg: #0b0b0c;
+  --color-surface: #141416;
+  --color-surface-2: #1b1b1e;
+  --color-line: #26262a;
+  --color-fg: #ece8df;
+  --color-muted: #9c978c;
+  --color-faint: #8a857b;
+  --color-signal: #ff5a1f;
 
-  --color-holo-1: #9ff2d8;
-  --color-holo-2: #a9c4ff;
-  --color-holo-3: #d8b4ff;
-  --color-holo-4: #ffc7a6;
+  --font-display: var(--font-big-shoulders), "Arial Narrow", sans-serif;
+  --font-sans: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
 
-  --font-display: var(--font-instrument), ui-serif, Georgia, serif;
-  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
-
-  --animate-marquee: marquee 38s linear infinite;
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ------------------------------------------------------------------ */
-/*  Base                                                               */
-/* ------------------------------------------------------------------ */
 :root {
   color-scheme: dark;
-  --holo: linear-gradient(
-    100deg,
-    var(--color-holo-1) 0%,
-    var(--color-holo-2) 30%,
-    var(--color-holo-3) 58%,
-    var(--color-holo-4) 85%,
-    var(--color-holo-1) 100%
-  );
 }
 
 body {
@@ -53,120 +33,66 @@ body {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--color-holo-3) 40%, transparent);
-  color: #fff;
+  background: var(--color-signal);
+  color: var(--color-bg);
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-holo-2);
+  outline: 2px solid var(--color-signal);
   outline-offset: 3px;
-  border-radius: 6px;
 }
 
-/* Thin custom scrollbar */
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background: var(--color-bg); }
-::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: 99px;
-  border: 2px solid var(--color-bg);
+::-webkit-scrollbar-thumb { background: var(--color-line); border: 2px solid var(--color-bg); }
+
+/* ------------------------------------------------------------------ */
+/*  Type                                                               */
+/* ------------------------------------------------------------------ */
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.88;
+  letter-spacing: -0.01em;
 }
 
-/* ------------------------------------------------------------------ */
-/*  Type helpers                                                       */
-/* ------------------------------------------------------------------ */
-.font-display { font-family: var(--font-display); font-weight: 400; }
-
-/* Mono metadata label: the "spec sheet" voice of the site */
 .label {
   font-family: var(--font-mono);
   font-size: 0.72rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-faint);
+  color: var(--color-muted);
 }
 
-/* Iridescent text, used for one or two words at a time */
-.text-holo {
-  background: var(--holo);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: holo-shift 9s ease-in-out infinite alternate;
-}
-@keyframes holo-shift {
-  from { background-position: 0% 50%; }
-  to { background-position: 100% 50%; }
-}
+.hairline { border-color: var(--color-line); }
 
-/* ------------------------------------------------------------------ */
-/*  Surfaces                                                           */
-/* ------------------------------------------------------------------ */
-.hairline { border-color: var(--color-border); }
+/* Masked line reveal: each .line-mask wraps a .line-inner GSAP moves. */
+.line-mask { display: block; overflow: hidden; padding-bottom: 0.04em; }
+.line-inner { display: block; }
 
-/* Card with a cursor-following spotlight + holo edge on hover.
-   --mx / --my are set by <Spotlight>. */
-.spot {
-  position: relative;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  isolation: isolate;
-  transition: border-color 0.3s ease;
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 3rem;
+  padding: 0 1.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid var(--color-line);
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
-.spot::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  background: radial-gradient(
-    420px circle at var(--mx, 50%) var(--my, 50%),
-    color-mix(in srgb, var(--color-holo-2) 9%, transparent),
-    transparent 60%
-  );
+.btn:hover { border-color: var(--color-fg); }
+.btn-signal {
+  background: var(--color-signal);
+  border-color: var(--color-signal);
+  color: #0b0b0c;
+  font-weight: 600;
 }
-.spot::after {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  background: radial-gradient(
-    260px circle at var(--mx, 50%) var(--my, 50%),
-    var(--color-holo-3),
-    var(--color-holo-1) 40%,
-    transparent 70%
-  );
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-.spot:hover::before,
-.spot:hover::after { opacity: 1; }
-
-/* Primary button: paper-white pill with a holo sheen on hover */
-.btn-primary {
-  position: relative;
-  overflow: hidden;
-  background: var(--color-fg);
-  color: var(--color-bg);
-}
-.btn-primary::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--holo);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  mix-blend-mode: multiply;
-}
-.btn-primary:hover::after { opacity: 0.55; }
+.btn-signal:hover { background: var(--color-fg); border-color: var(--color-fg); }
 
 /* Film grain overlay */
 .grain::after {
@@ -175,36 +101,88 @@ body {
   inset: 0;
   z-index: 60;
   pointer-events: none;
-  opacity: 0.04;
+  opacity: 0.045;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Ambient light behind the hero card */
-.hero-aura {
-  background:
-    radial-gradient(40% 45% at 72% 48%, color-mix(in srgb, var(--color-holo-3) 14%, transparent), transparent 70%),
-    radial-gradient(30% 35% at 82% 30%, color-mix(in srgb, var(--color-holo-1) 9%, transparent), transparent 70%);
+/* Engineering grid, faded at the edges */
+.bg-grid {
+  background-image:
+    linear-gradient(var(--color-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+  background-size: 96px 96px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 20%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 20%, transparent 80%);
+  opacity: 0.55;
 }
 
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
 /* ------------------------------------------------------------------ */
-/*  Reveal-on-scroll — only hides content when scripting is on,        */
-/*  so the page is never blank if JS fails.                            */
+/*  Reveal fallback (where GSAP isn't driving)                         */
 /* ------------------------------------------------------------------ */
 @media (scripting: enabled) {
   .reveal {
     opacity: 0;
-    transform: translateY(22px);
-    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translateY(24px);
+    transition: opacity 0.9s var(--ease-expo), transform 0.9s var(--ease-expo);
   }
-  .reveal.is-visible {
-    opacity: 1;
-    transform: none;
-  }
+  .reveal.is-visible { opacity: 1; transform: none; }
 }
+
+/* ------------------------------------------------------------------ */
+/*  Mini collectible card (demos) — titanium, signal edge              */
+/* ------------------------------------------------------------------ */
+.mini-card {
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.25s ease-out;
+  transform-style: preserve-3d;
+}
+.mini-foil {
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.14) 46%, rgba(255, 90, 31, 0.22) 52%, transparent 66%);
+  background-size: 250% 250%;
+  background-position: var(--fp, 30%) 50%;
+  mix-blend-mode: screen;
+  transition: background-position 0.25s ease-out;
+}
+.mini-glare {
+  background: radial-gradient(circle at var(--gx, 30%) var(--gy, 20%), rgba(255, 255, 255, 0.16), transparent 45%);
+  mix-blend-mode: overlay;
+}
+.mint-scan {
+  background: linear-gradient(180deg, transparent 0%, rgba(255, 90, 31, 0.75) 50%, transparent 52%);
+  background-size: 100% 220%;
+  animation: mint-scan 1.1s cubic-bezier(0.65, 0, 0.35, 1) both;
+  mix-blend-mode: screen;
+}
+@keyframes mint-scan { from { background-position: 0 100%; } to { background-position: 0 -120%; } }
+.mint-flash { background: var(--color-signal); mix-blend-mode: screen; animation: mint-flash 1.2s ease-out both; }
+@keyframes mint-flash { 0% { opacity: 0.6; } 100% { opacity: 0; } }
+
+.pack-half {
+  background:
+    linear-gradient(115deg, transparent 25%, rgba(255, 255, 255, 0.1) 45%, transparent 60%),
+    linear-gradient(160deg, #2a2a2e, #18181b 60%, #0e0e10);
+  border: 1px solid #3a3a40;
+  transition: transform 0.7s var(--ease-expo), opacity 0.5s ease;
+}
+.pack-top::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -1px;
+  height: 6px;
+  background: repeating-linear-gradient(90deg, transparent 0 6px, rgba(236, 232, 223, 0.3) 6px 8px);
+}
+.pack-card { transform: translateY(18%) scale(0.92); opacity: 0; transition: transform 0.8s var(--ease-expo) 0.15s, opacity 0.3s ease 0.15s; }
+.pack:hover .pack-top { transform: translateY(-3px) rotate(-1deg); }
+.pack.is-open .pack-top { transform: translate(-24%, -80%) rotate(-24deg); opacity: 0; }
+.pack.is-open .pack-bottom { transform: translateY(18%) scale(0.96); opacity: 0.12; }
+.pack.is-open .pack-card { transform: translateY(-14%) scale(1); opacity: 1; filter: drop-shadow(0 0 26px rgba(255, 90, 31, 0.45)); }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
-  .text-holo { animation: none; }
-  .animate-marquee { animation: none; }
+  .mini-card, .pack-half, .pack-card, .mini-foil { transition: none !important; }
+  .mint-scan, .mint-flash { animation-duration: 0.01s; }
 }

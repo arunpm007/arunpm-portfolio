@@ -1,25 +1,29 @@
 import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import Work from "@/components/Work";
-import Projects from "@/components/Projects";
-import CaseStudies from "@/components/CaseStudies";
-import Skills from "@/components/Skills";
-import About from "@/components/About";
-import Contact from "@/components/Contact";
+import Hero from "@/components/home/Hero";
+import Statement from "@/components/home/Statement";
+import SelectedWork from "@/components/home/SelectedWork";
+import Capabilities from "@/components/home/Capabilities";
+import Proof from "@/components/home/Proof";
+import Experience from "@/components/home/Experience";
+import Projects from "@/components/home/Projects";
+import Contact from "@/components/home/Contact";
 import { ScrollProgress } from "@/components/ui";
+import { RefreshOnLoad } from "@/components/motion/Motion";
 
 export default function Home() {
   return (
     <>
       <ScrollProgress />
+      <RefreshOnLoad />
       <Navbar />
       <main>
         <Hero />
-        <Work />
+        <Statement />
+        <SelectedWork />
+        <Capabilities />
+        <Proof />
+        <Experience />
         <Projects />
-        <CaseStudies />
-        <Skills />
-        <About />
         <Contact />
       </main>
     </>

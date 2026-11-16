@@ -10,7 +10,15 @@ export type Tier = "high" | "mid" | "low";
  *  - mid:  phones / integrated mobile GPUs → capped pixel ratio
  *  - high: everything else
  */
-function detectTier(): Tier {
+export type GpuInfo = { tier: Tier; renderer: string };
+
+function detect(): GpuInfo {
+  let renderer = "";
+  const tier = detectTier((r) => (renderer = r));
+  return { tier, renderer };
+}
+
+function detectTier(report: (renderer: string) => void): Tier {
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduced) return "low";
 
@@ -25,6 +33,7 @@ function detectTier(): Tier {
       gl.getParameter(info ? info.UNMASKED_RENDERER_WEBGL : gl.RENDERER) ?? ""
     );
     gl.getExtension("WEBGL_lose_context")?.loseContext();
+    report(renderer);
   } catch {
     return "low";
   }
@@ -43,12 +52,17 @@ function detectTier(): Tier {
   return "high";
 }
 
-let cached: Tier | null = null;
-const getSnapshot = () => (cached ??= detectTier());
+let cached: GpuInfo | null = null;
+const getSnapshot = () => (cached ??= detect());
 const getServerSnapshot = () => null;
 const subscribe = () => () => {};
 
+/** Measured GPU tier + renderer string; null during SSR / hydration. */
+export function useGpuInfo(): GpuInfo | null {
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+}
+
 /** Returns null during SSR / hydration, then the measured tier. */
 export function useDeviceTier(): Tier | null {
-  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  return useGpuInfo()?.tier ?? null;
 }

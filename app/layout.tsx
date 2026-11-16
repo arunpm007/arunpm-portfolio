@@ -1,19 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { Big_Shoulders, Inter_Tight, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
+import PageCurtain from "@/components/motion/PageCurtain";
 import { profile, siteUrl } from "@/lib/site";
 
-const geist = Geist({ variable: "--font-geist", subsets: ["latin"] });
+// All three are variable fonts: no weight list, one file each.
+const display = Big_Shoulders({ variable: "--font-big-shoulders", subsets: ["latin"], adjustFontFallback: false });
 
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+const sans = Inter_Tight({ variable: "--font-inter-tight", subsets: ["latin"] });
 
-const instrument = Instrument_Serif({
-  variable: "--font-instrument",
-  subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
-});
+const mono = JetBrains_Mono({ variable: "--font-jetbrains", subsets: ["latin"] });
 
 const title = `${profile.name} — ${profile.role}`;
 const description =
@@ -38,7 +35,7 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title, description },
 };
 
-export const viewport: Viewport = { themeColor: "#0c0c0e" };
+export const viewport: Viewport = { themeColor: "#0b0b0c" };
 
 export default function RootLayout({
   children,
@@ -46,9 +43,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geist.variable} ${geistMono.variable} ${instrument.variable} antialiased`}
+      className={`${display.variable} ${sans.variable} ${mono.variable} antialiased`}
     >
       <body className="grain min-h-screen" suppressHydrationWarning>
+        <PageCurtain />
         <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>

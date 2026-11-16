@@ -17,16 +17,16 @@ export function readFonts(): Fonts {
   const v = (name: string, fallback: string) =>
     s.getPropertyValue(name).trim() || fallback;
   return {
-    serif: v("--font-instrument", "Georgia, serif"),
-    sans: v("--font-geist", "system-ui, sans-serif"),
-    mono: v("--font-geist-mono", "ui-monospace, monospace"),
+    serif: v("--font-big-shoulders", "Arial Narrow, sans-serif"),
+    sans: v("--font-inter-tight", "system-ui, sans-serif"),
+    mono: v("--font-jetbrains", "ui-monospace, monospace"),
   };
 }
 
 export async function loadFonts(f: Fonts) {
   await Promise.all([
-    document.fonts.load(`italic 400 100px ${f.serif}`),
-    document.fonts.load(`400 100px ${f.serif}`),
+    document.fonts.load(`800 100px ${f.serif}`),
+    document.fonts.load(`600 100px ${f.serif}`),
     document.fonts.load(`500 40px ${f.sans}`),
     document.fonts.load(`500 24px ${f.mono}`),
   ]).catch(() => undefined);
@@ -139,8 +139,8 @@ export function drawFront(f: Fonts) {
   const ey = 500;
 
   // Faint print of the emblem on the card itself; the foil lights it up.
-  emblem(c, ex, ey, 300, "rgba(237,236,231,0.10)");
-  frame(c, "rgba(237,236,231,0.14)", 2);
+  emblem(c, ex, ey, 300, "rgba(236,232,223,0.10)");
+  frame(c, "rgba(236,232,223,0.14)", 2);
 
   // Foil areas
   hatch(m, 0.16);
@@ -153,41 +153,44 @@ export function drawFront(f: Fonts) {
   chip(c, PAD, 168, "#2b2b31", "#1a1a1e");
 
   // Header
-  c.fillStyle = "#8a887f";
+  c.fillStyle = "#8a857b";
   c.font = `500 24px ${f.mono}`;
   c.textBaseline = "alphabetic";
   spaced(c, card.edition.toUpperCase(), PAD, 112, 4);
   spaced(c, card.serial, CARD_W - PAD, 112, 4, "right");
-  c.fillStyle = "rgba(237,236,231,0.16)";
+  c.fillStyle = "rgba(236,232,223,0.16)";
   c.fillRect(PAD, 136, CARD_W - PAD * 2, 2);
 
   // Name + role
-  c.fillStyle = "#edece7";
-  c.font = `italic 400 168px ${f.serif}`;
+  c.fillStyle = "#ece8df";
+  c.font = `800 190px ${f.serif}`;
   c.textAlign = "left";
-  c.fillText(card.name, PAD - 6, 960);
-  c.fillStyle = "#a8a69f";
+  c.fillText(card.name.toUpperCase(), PAD - 4, 960);
+  c.fillStyle = "#9c978c";
   c.font = `500 40px ${f.sans}`;
   c.fillText(card.role, PAD, 1022);
 
-  c.fillStyle = "rgba(237,236,231,0.18)";
-  c.fillRect(PAD, 1068, CARD_W - PAD * 2, 2);
+  // Signal-orange rule under the role
+  c.fillStyle = "#ff5a1f";
+  c.fillRect(PAD, 1066, 180, 5);
+  c.fillStyle = "rgba(236,232,223,0.18)";
+  c.fillRect(PAD + 196, 1068, CARD_W - PAD * 2 - 196, 2);
 
   // Stats
   const colW = (CARD_W - PAD * 2) / card.stats.length;
   card.stats.forEach((s, i) => {
     const x = PAD + i * colW;
-    c.fillStyle = "#edece7";
-    c.font = `400 64px ${f.serif}`;
+    c.fillStyle = "#ece8df";
+    c.font = `800 72px ${f.serif}`;
     c.textAlign = "left";
     c.fillText(s.value, x, 1168);
-    c.fillStyle = "#8a887f";
+    c.fillStyle = "#8a857b";
     c.font = `500 22px ${f.mono}`;
     spaced(c, s.label.toUpperCase(), x, 1208, 3);
   });
 
   // Footer
-  c.fillStyle = "#8a887f";
+  c.fillStyle = "#8a857b";
   c.font = `500 22px ${f.mono}`;
   spaced(c, card.footerLeft.toUpperCase(), PAD, CARD_H - 76, 4);
   spaced(c, card.footerRight.toUpperCase(), CARD_W - PAD, CARD_H - 76, 4, "right");
@@ -202,39 +205,39 @@ export function drawBack(f: Fonts) {
   m.fillRect(0, 0, CARD_W, CARD_H);
 
   base(c);
-  frame(c, "rgba(237,236,231,0.14)", 2);
+  frame(c, "rgba(236,232,223,0.14)", 2);
   hatch(m, 0.22);
   frame(m, "#fff", 5);
 
   // Big faint monogram, foil only
   m.fillStyle = "#fff";
   m.globalAlpha = 0.2;
-  m.font = `italic 400 760px ${f.serif}`;
+  m.font = `900 820px ${f.serif}`;
   m.textAlign = "center";
   m.fillText("AP", CARD_W / 2 + 20, 980);
   m.globalAlpha = 1;
-  c.fillStyle = "rgba(237,236,231,0.035)";
-  c.font = `italic 400 760px ${f.serif}`;
+  c.fillStyle = "rgba(236,232,223,0.035)";
+  c.font = `900 820px ${f.serif}`;
   c.textAlign = "center";
   c.fillText("AP", CARD_W / 2 + 20, 980);
 
-  c.fillStyle = "#8a887f";
+  c.fillStyle = "#8a857b";
   c.font = `500 24px ${f.mono}`;
   spaced(c, card.back.title.toUpperCase(), PAD, 112, 4);
   spaced(c, card.serial, CARD_W - PAD, 112, 4, "right");
-  c.fillStyle = "rgba(237,236,231,0.16)";
+  c.fillStyle = "rgba(236,232,223,0.16)";
   c.fillRect(PAD, 136, CARD_W - PAD * 2, 2);
 
   card.back.rows.forEach((row, i) => {
     const y = 250 + i * 142;
-    c.fillStyle = "#8a887f";
+    c.fillStyle = "#8a857b";
     c.font = `500 22px ${f.mono}`;
     spaced(c, row.label.toUpperCase(), PAD, y, 4);
-    c.fillStyle = "#edece7";
+    c.fillStyle = "#ece8df";
     c.font = `500 40px ${f.sans}`;
     c.textAlign = "left";
     c.fillText(row.value, PAD, y + 56);
-    c.fillStyle = "rgba(237,236,231,0.10)";
+    c.fillStyle = "rgba(236,232,223,0.10)";
     c.fillRect(PAD, y + 86, CARD_W - PAD * 2, 2);
   });
 
@@ -246,12 +249,12 @@ export function drawBack(f: Fonts) {
     const w = 3 + (seed % 4) * 3;
     m.fillStyle = "#fff";
     m.fillRect(x, CARD_H - 200, w, 74);
-    c.fillStyle = "rgba(237,236,231,0.55)";
+    c.fillStyle = "rgba(236,232,223,0.55)";
     c.fillRect(x, CARD_H - 200, w, 74);
     x += w + 5 + (seed % 3) * 3;
   }
 
-  c.fillStyle = "#8a887f";
+  c.fillStyle = "#8a857b";
   c.font = `500 22px ${f.mono}`;
   spaced(c, card.back.hint.toUpperCase(), PAD, CARD_H - 76, 3);
 

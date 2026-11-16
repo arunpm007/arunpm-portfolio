@@ -1,7 +1,7 @@
 // ------------------------------------------------------------------
-//  Single source of truth for portfolio content.
-//  Edit here to update the site — no component changes needed.
-//  Keep this in step with public/arunpm_resume.pdf.
+//  Single source of truth for portfolio content. Follows DESIGN.md:
+//  one claim per block, with its proof. No team sizes, no employer
+//  product names, no invented numbers.
 // ------------------------------------------------------------------
 
 // Set NEXT_PUBLIC_SITE_URL to the deployed URL (used for link previews).
@@ -9,93 +9,115 @@ export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:305
 
 export const profile = {
   name: "Arun P M",
-  role: "Senior Frontend Lead Engineer",
-  tagline: "React • Next.js • TypeScript • Design Systems",
+  role: "Senior Frontend Engineer & Lead",
+  headline: "Frontend architect",
   location: "Bangalore, India",
   email: "imarunmanohar007@gmail.com",
   github: "https://github.com/arunpm007",
   linkedin: "https://www.linkedin.com/in/arun-p-m-3a9005225/",
   resumeUrl: "/arunpm_resume.pdf",
   intro:
-    "I lead a 5-person UI/UX and frontend team across four connected consumer products — identity, payments, gaming and digital collectibles — and stay hands-on across React, Next.js and NestJS.",
+    "I architect frontends that carry a business — the platform, identity, commerce and real-time 3D of a four-product ecosystem, and the design system that holds it together.",
 };
 
-export const about = {
-  paragraphs: [
-    "I'm a senior frontend lead with 3.5 years of experience shipping web and mobile products end to end.",
-    "At Etta Global I set UI and design-system standards, run code and design reviews, and turn designer and product decisions into shipped flows. I own single sign-on, account security, checkout and performance across four products, from the React frontend to NestJS APIs and deploys.",
-    "Before that I was the sole mobile engineer on Vtiger CRM's Flutter app, covering features, debugging and the full release cycle.",
-  ],
-  stats: [
-    { value: "3.5 yrs", label: "Shipping web and mobile products" },
-    { value: "5", label: "Engineers and designers led" },
-    { value: "191→53 MB", label: "Static assets cut on GOAT Games" },
-    { value: "−35%", label: "Mobile app crash rate" },
-  ],
+/** Three facts in the hero's bottom bar — the 10-second read. */
+export const heroFacts = [
+  { label: "Role", value: "Senior Frontend Engineer & Lead" },
+  { label: "Owns", value: "Platform · Identity · Commerce · 3D · Design systems" },
+  { label: "Status", value: "Open to senior & lead roles" },
+];
+
+/** The scroll statement. **Bold** words get the signal colour. */
+export const statement =
+  "I don't ship screens. I architect **the systems behind them** — one shell that sells four products, one identity across all of them, real-time 3D in production, and a design system that re-skins everything **without breaking a page**.";
+
+/** Scope, not vanity metrics: what a senior owns. */
+export const scope = [
+  { value: "4", label: "Products in one ecosystem — architected end to end" },
+  { value: "80+", label: "Legacy screens migrated onto one design system, no freeze" },
+  { value: "3", label: "Surfaces shipped: web, mobile web, native iOS + Android" },
+  { value: "UI→API", label: "Ownership from interface to auth, payments and deploys" },
+];
+
+export type Capability = {
+  id: "platform" | "identity" | "commerce" | "3d" | "systems" | "mobile";
+  title: string;
+  claim: string;
+  built: string[];
+  stack: string;
+  link?: { href: string; label: string };
 };
 
-export type SkillGroup = { title: string; items: string[] };
-
-export const skills: SkillGroup[] = [
+export const capabilities: Capability[] = [
   {
-    title: "Languages",
-    items: ["TypeScript", "JavaScript", "Dart", "SQL", "Java", "C/C++", "Bash"],
-  },
-  {
-    title: "Frontend & Mobile",
-    items: [
-      "React",
-      "Next.js (App Router)",
-      "Three.js / React Three Fiber",
-      "MUI",
-      "Tailwind CSS",
-      "Flutter",
-      "React Native",
+    id: "platform",
+    title: "Platform architecture",
+    claim: "One shell that hosts four products and sells each in place — without blurring who owns what.",
+    built: [
+      "A registry of product canvases, each in its own look, inside one platform shell",
+      "Products keep pricing authority behind an allow-listed same-origin proxy",
+      "Six shared step-flows: shop, inventory, pay, security, devices, orders",
     ],
+    stack: "Next.js · React · TypeScript · Route handlers",
+    link: { href: "/work/platform-shell", label: "Case study" },
   },
   {
-    title: "Backend & Data",
-    items: [
-      "Node.js",
-      "NestJS",
-      "REST APIs",
-      "PostgreSQL",
-      "TypeORM",
-      "Drizzle",
-      "Redis",
-      "Supabase",
-      "MongoDB",
-      "Firebase",
+    id: "identity",
+    title: "Identity & security",
+    claim: "One identity across the ecosystem, with sessions people can see and end.",
+    built: [
+      "Single sign-on on OAuth 2.0 / OIDC with MFA and per-product branding",
+      "Device sessions with remote sign-out and fail-closed revocation",
+      "Step-up re-authentication, new-device alerts, and a platform security review",
     ],
+    stack: "OAuth 2.0 / OIDC · NestJS · PostgreSQL · Redis",
+    link: { href: "/work/identity", label: "Case study" },
   },
   {
-    title: "Auth & Security",
-    items: [
-      "OAuth 2.0 / OIDC",
-      "SSO",
-      "MFA",
-      "Step-up auth",
-      "Session & token management",
-      "Row-level security",
+    id: "commerce",
+    title: "Commerce & wallets",
+    claim: "Checkout that can't be gamed, and on-chain actions people can trust.",
+    built: [
+      "Server-authoritative pricing; paid items settle once and are never re-sold",
+      "Provisional orders, gift cards and payment sessions across products",
+      "Browser-wallet integration: discovery, lock states, picker, minting, transfers",
     ],
+    stack: "Stripe · Payment sessions · Web3 wallet APIs",
   },
   {
-    title: "Infra & Tooling",
-    items: [
-      "Docker",
-      "AWS Amplify",
-      "GitHub Actions",
-      "Kong",
-      "Stripe",
-      "Mixpanel",
-      "Playwright",
-      "Jest",
-      "Vitest",
+    id: "3d",
+    title: "Real-time 3D & motion",
+    claim: "Cinematic 3D that ships to production — and still runs on a mid-range phone.",
+    built: [
+      "A pack opening on one shared WebGL canvas, holographic card frames, a type-to-mint hero",
+      "A company site told as a Three.js film, with its own swipe mode for phones",
+      "GPU-aware quality tiers and an asset pipeline that keeps it fast",
     ],
+    stack: "Three.js · React Three Fiber · GLSL · GSAP",
+    link: { href: "/work/realtime-3d", label: "Case study" },
   },
   {
-    title: "Spoken",
-    items: ["English", "Hindi", "Kannada", "Malayalam", "Tamil"],
+    id: "systems",
+    title: "Design systems",
+    claim: "A layered design architecture that re-skins a platform and migrates its legacy screens one at a time.",
+    built: [
+      "Skins → tokens → materials → primitives; screens own zero visual values",
+      "A compatibility layer kept 80+ legacy screens running during the move",
+      "Runtime per-product theming, a WCAG AA baseline and a live style guide",
+    ],
+    stack: "Design tokens · CSS variables · React · MUI interop",
+    link: { href: "/work/design-architecture", label: "Case study" },
+  },
+  {
+    id: "mobile",
+    title: "Mobile & cross-platform",
+    claim: "Native and mobile web, designed for thumbs — not a shrunken desktop.",
+    built: [
+      "Sole engineer of an enterprise CRM app on iOS and Android",
+      "Touch-first mobile versions of the collectibles products",
+      "Phone-first interaction models: swipe steps, bottom sheets, safe areas",
+    ],
+    stack: "Flutter · Riverpod · Mobile web",
   },
 ];
 
@@ -103,52 +125,32 @@ export type Experience = {
   company: string;
   role: string;
   period: string;
-  summary: string;
-  highlights: string[];
-  stack: string[];
+  lines: string[];
+  stack: string;
 };
 
 export const experience: Experience[] = [
   {
     company: "Etta Global",
     role: "Senior Lead Engineer, Frontend · UI/UX & Frontend Team Lead",
-    period: "May 2026 — Present",
-    summary:
-      "Leading a team of 5 frontend engineers and designers across four connected consumer products, while staying hands-on across frontend, NestJS APIs and deploys.",
-    highlights: [
-      "Single sign-on: built cross-product sign-in through 4IR (the shared identity and payments platform) — popup flow with redirect fallback, branded sign-in per product, MFA, separate cookies per product and global sign-out.",
-      "Security: found and proved an authorization flaw that let any signed-in user obtain admin-level tokens, and drove the fix. Shipped device management with remote sign-out, step-up checks, new-device alerts and sign-in history.",
-      "Checkout correctness: moved order pricing to the server catalogue so the browser cart is never trusted, and made paid checkouts settle reliably so owned names can't be re-sold.",
-      "Performance: cut GOAT Games static assets from 191 MB to 53 MB and card art from 8.4 MB to 0.6 MB, added GPU-based device tiering for the 3D hero, and fixed an event-loop crash in a shared WebGL canvas.",
-      "Design systems & 3D: token-based design system with an accessibility baseline and dark mode; Three.js / React Three Fiber scenes (pack-open reveal, 3D cube, holographic card tilt).",
-      "Web3 wallets: integrated the Etta Keychain browser wallet — discovery, lock states, wallet picker and on-chain minting.",
-      "Release health: unblocked staging deploys by pinning the package-manager toolchain; added SEO and JSON-LD, Mixpanel funnels, a WCAG AA audit and Playwright end-to-end tests.",
+    period: "2026 — Now",
+    lines: [
+      "Own the frontend architecture of a four-product ecosystem — the platform shell, single sign-on, commerce, real-time 3D and the design system.",
+      "Lead frontend and UI/UX for a cross-functional team of engineers and designers: architecture standards, design and code reviews, and product decisions turned into shipped flows.",
+      "Build the hard parts hands-on — session security, wallet integration, WebGL, and the APIs and deploys behind them.",
     ],
-    stack: [
-      "Next.js 15",
-      "React 19",
-      "TypeScript",
-      "NestJS",
-      "PostgreSQL",
-      "Redis",
-      "Stripe",
-      "Three.js",
-      "Docker",
-      "AWS Amplify",
-    ],
+    stack: "Next.js · React · TypeScript · Three.js / R3F · NestJS · PostgreSQL · Redis",
   },
   {
-    company: "Vtiger CRM Pvt. Ltd.",
+    company: "Vtiger CRM",
     role: "Software Developer, Flutter",
-    period: "May 2023 — Apr 2026",
-    summary:
-      "Sole engineer for the CRM's Flutter app (joined as Software Developer Intern), covering features, debugging and the full release cycle while keeping a 4+ store rating.",
-    highlights: [
-      "Cut app load time by 30% and crash rate by 35% by fixing 50+ production issues, adding caching and removing redundant network calls.",
-      "Built geo-fenced check-in/out, deep linking, camera document scanning and Firebase push notifications with background handling.",
-      "Restructured the app on Riverpod and MVVM with modular UI, domain and data layers.",
+    period: "2023 — 2026",
+    lines: [
+      "Owned an enterprise CRM's mobile app end to end as its sole engineer — architecture, features and store releases on iOS and Android.",
+      "Re-platformed it on Riverpod and MVVM and took it from fragile to stable, closing 50+ production issues.",
+      "Shipped field features: geo-fenced check-in, deep links, document scanning and background push.",
     ],
-    stack: ["Flutter", "Dart", "Riverpod", "Firebase", "REST APIs"],
+    stack: "Flutter · Dart · Riverpod · Firebase",
   },
 ];
 
@@ -208,20 +210,16 @@ export const projects: Project[] = [
 
 export const nav = [
   { label: "Work", href: "#work" },
+  { label: "Capabilities", href: "#capabilities" },
+  { label: "Proof", href: "#proof" },
+  { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
-  { label: "Case studies", href: "#case-studies" },
-  { label: "Skills", href: "#skills" },
-  { label: "About", href: "#about" },
   { label: "Contact", href: "#contact" },
-];
+]
 
-/** Headline numbers shown in the hero ticker. */
-export const ticker = [
-  "3.5 yrs shipping web + mobile",
-  "Leading a team of 5",
-  "SSO across 4 products",
-  "191 → 53 MB static assets",
-  "8.4 → 0.6 MB card art",
-  "−35% mobile crash rate",
-  "WCAG AA audited",
+/** What I'm looking for next, shown in Contact. */
+export const lookingFor = [
+  "Senior frontend, frontend architect or lead roles",
+  "Product teams where design quality and engineering rigour both matter",
+  "Ownership across platform, identity, commerce and real-time 3D",
 ];
