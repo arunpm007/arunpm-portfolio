@@ -2,7 +2,7 @@
 
 A cinematic, high-performance developer portfolio built with **Next.js**, **React Three Fiber** and a **custom GLSL shader** hero. Designed to be fast on everything from flagship laptops to low-end phones via device tiering.
 
-> Live: _add your Vercel URL here_
+> Source: [github.com/arunpm007/arunpm-portfolio](https://github.com/arunpm007/arunpm-portfolio)
 
 ## Highlights
 

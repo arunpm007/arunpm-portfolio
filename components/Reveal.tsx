@@ -37,7 +37,13 @@ export default function Reveal({
     return () => observer.disconnect();
   }, []);
 
-  const Tag = as as React.ElementType;
+  // Cast to a simple component type so TS doesn't expand every intrinsic element.
+  const Tag = as as unknown as React.FC<{
+    ref: React.Ref<HTMLElement>;
+    className: string;
+    style?: React.CSSProperties;
+    children: React.ReactNode;
+  }>;
   return (
     <Tag
       ref={ref}

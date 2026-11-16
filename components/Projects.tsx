@@ -4,6 +4,7 @@ import { projects } from "@/lib/site";
 
 const statusStyles: Record<string, string> = {
   Live: "border-accent/40 bg-accent/10 text-accent-soft",
+  "Open source": "border-sky-400/30 bg-sky-400/10 text-sky-300",
   "In progress": "border-amber-400/30 bg-amber-400/10 text-amber-300",
   Planned: "border-border bg-surface-2/60 text-faint",
 };
@@ -54,6 +55,8 @@ export default function Projects() {
                   {project.href && (
                     <a
                       href={project.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="cursor-pointer text-accent transition-colors hover:text-accent-soft"
                     >
                       Live demo →
@@ -62,6 +65,8 @@ export default function Projects() {
                   {project.repo && (
                     <a
                       href={project.repo}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="cursor-pointer text-muted transition-colors hover:text-fg"
                     >
                       Code →

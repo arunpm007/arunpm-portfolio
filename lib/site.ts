@@ -10,9 +10,9 @@ export const profile = {
   location: "Bangalore, India",
   email: "imarunmanohar007@gmail.com",
   phone: "+91 99007 64944",
-  // TODO: fill in your real handles
-  github: "https://github.com/",
-  linkedin: "https://linkedin.com/in/",
+  github: "https://github.com/arunpm007",
+  // Add your LinkedIn profile URL here; the button is hidden while this is empty.
+  linkedin: "",
   resumeUrl: "/arunpm_resume.pdf",
   intro:
     "I build immersive, high-performance web experiences — interactive 3D, custom shaders and pixel-perfect interfaces — with React, Next.js and Three.js. Previously shipped production mobile apps as a sole Flutter engineer.",
@@ -133,7 +133,7 @@ export type Project = {
   title: string;
   blurb: string;
   tags: string[];
-  status: "Live" | "In progress" | "Planned";
+  status: "Live" | "Open source" | "In progress" | "Planned";
   featured?: boolean;
   href?: string;
   repo?: string;
@@ -149,12 +149,14 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    title: "3D Product Configurator",
+    title: "3D Material Studio",
     blurb:
-      "Real-time 3D configurator — rotate a product and swap colours, materials and parts live, with a clean control UI. Built to show off R3F + product-experience craft.",
-    tags: ["React Three Fiber", "Three.js", "TypeScript"],
-    status: "In progress",
+      "A dev tool to edit 3D model materials in the browser — load any GLB, tweak each part's colour, metalness and roughness live, then copy the config into your own project. Standalone Vite + R3F app.",
+    tags: ["React Three Fiber", "Three.js", "glTF", "Vite"],
+    status: "Open source",
     featured: true,
+    // Add `href` with the live URL once it's deployed, and set status to "Live".
+    repo: "https://github.com/arunpm007/material-studio",
   },
   {
     title: "Immersive 3D Scroll Story",
