@@ -243,7 +243,7 @@ function Panel({ cs, pinned, label }: { cs: CaseStudy; pinned: boolean; label: s
         <p className="mt-4 line-clamp-3 max-w-lg text-lg leading-relaxed text-muted">{cs.summary}</p>
         <dl className="mt-auto grid grid-cols-3 gap-4 border-t hairline pt-5">
           {cs.results.map((r) => (
-            <div key={r.label} className="flex flex-col-reverse">
+            <div key={r.label} className="flex flex-col-reverse justify-end">
               <dt className="label mt-2 leading-5 !text-[0.65rem]">{r.label}</dt>
               <dd className="display text-[clamp(2rem,3.2vw,3rem)]">{r.value}</dd>
             </div>

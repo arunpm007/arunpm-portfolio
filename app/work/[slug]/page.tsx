@@ -146,7 +146,7 @@ export default async function CaseStudyPage({ params }: Params) {
         <section aria-label="Results" className="border-b hairline">
           <dl className="mx-auto grid max-w-[1280px] sm:grid-cols-3">
             {cs.results.map((r, i) => (
-              <div key={r.label} className={`flex flex-col-reverse px-4 py-10 sm:px-6 ${i > 0 ? "border-t hairline sm:border-l sm:border-t-0" : ""}`}>
+              <div key={r.label} className={`flex flex-col-reverse justify-end px-4 py-10 sm:px-6 ${i > 0 ? "border-t hairline sm:border-l sm:border-t-0" : ""}`}>
                 <dt className="label mt-3">{r.label}</dt>
                 <dd className={`display text-[clamp(3.5rem,7vw,6rem)] ${i === 0 ? "text-signal" : ""}`}>
                   <CountUp value={r.value} />
