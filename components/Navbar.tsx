@@ -1,43 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { nav } from "@/lib/site";
 
-function MenuIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-5 w-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      aria-hidden="true"
-    >
-      <path d="M4 7h16M4 12h16M4 17h16" />
-    </svg>
-  );
-}
-
-function CloseIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-5 w-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      aria-hidden="true"
-    >
-      <path d="M6 6l12 12M18 6L6 18" />
-    </svg>
-  );
-}
-
-export default function Navbar() {
+export default function Navbar({ home = true }: { home?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState("");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -46,87 +16,97 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Logo: scroll to top when already home, otherwise navigate home.
-  const handleLogo = (e: React.MouseEvent) => {
-    setOpen(false);
-    if (typeof window !== "undefined" && window.location.pathname === "/") {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
+  // Highlight the section currently in view.
+  useEffect(() => {
+    if (!home) return;
+    const sections = nav
+      .map((n) => document.querySelector<HTMLElement>(n.href))
+      .filter((s): s is HTMLElement => !!s);
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(`#${e.target.id}`);
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px" }
+    );
+    sections.forEach((s) => io.observe(s));
+    return () => io.disconnect();
+  }, [home]);
+
+  const href = (h: string) => (home ? h : `/${h}`);
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4">
       <nav
-        className={`relative flex w-full max-w-6xl items-center justify-between rounded-full px-5 py-2.5 transition-all duration-300 ${
+        aria-label="Main"
+        className={`relative flex w-full max-w-6xl items-center justify-between rounded-full py-2 pl-5 pr-2 transition-all duration-300 ${
           scrolled || open
-            ? "border border-border bg-surface/70 backdrop-blur-xl"
-            : "border border-transparent bg-transparent"
+            ? "border hairline bg-surface/75 backdrop-blur-xl"
+            : "border border-transparent"
         }`}
       >
-        <a
-          href="/"
-          onClick={handleLogo}
-          className="font-heading text-sm font-bold tracking-tight text-fg"
-        >
-          Arun<span className="text-accent">.</span>
-        </a>
+        <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2" aria-label="Arun P M — home">
+          <span className="font-display text-2xl italic leading-none">AP</span>
+          <span className="label hidden sm:inline">Arun P M</span>
+        </Link>
 
-        {/* Desktop links */}
-        <div className="hidden items-center gap-7 md:flex">
+        <div className="hidden items-center gap-1 md:flex">
           {nav.map((item) => (
             <a
               key={item.href}
-              href={item.href}
-              className="text-sm text-muted transition-colors duration-200 hover:text-fg"
+              href={href(item.href)}
+              className={`relative rounded-full px-3.5 py-2 text-sm transition-colors ${
+                active === item.href ? "text-fg" : "text-muted hover:text-fg"
+              }`}
             >
               {item.label}
+              {active === item.href && (
+                <span className="absolute inset-x-3.5 -bottom-0.5 h-px [background:var(--holo)]" />
+              )}
             </a>
           ))}
         </div>
 
         <div className="flex items-center gap-2">
-          <a
+          <Link
             href="/resume"
-            className="hidden cursor-pointer rounded-full bg-accent px-4 py-1.5 text-sm font-medium text-bg transition-colors duration-200 hover:bg-accent-soft sm:inline-block"
+            className="btn-primary hidden min-h-10 items-center rounded-full px-5 text-sm font-semibold sm:inline-flex"
           >
-            Résumé
-          </a>
-
-          {/* Mobile menu toggle */}
+            <span className="relative z-10">Résumé</span>
+          </Link>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
-            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-border text-fg transition-colors hover:border-accent/50 md:hidden"
+            className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border hairline md:hidden"
           >
-            {open ? <CloseIcon /> : <MenuIcon />}
+            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden="true">
+              {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 8h16M4 16h16" />}
+            </svg>
           </button>
         </div>
 
-        {/* Mobile dropdown */}
         {open && (
-          <div className="absolute left-0 right-0 top-[calc(100%+8px)] rounded-2xl border border-border bg-surface/95 p-3 shadow-2xl backdrop-blur-xl md:hidden">
-            <div className="flex flex-col">
-              {nav.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="rounded-xl px-4 py-3 text-sm text-muted transition-colors hover:bg-surface-2 hover:text-fg"
-                >
-                  {item.label}
-                </a>
-              ))}
+          <div className="absolute left-0 right-0 top-[calc(100%+8px)] rounded-3xl border hairline bg-surface/95 p-3 shadow-2xl backdrop-blur-xl md:hidden">
+            {nav.map((item) => (
               <a
-                href="/resume"
+                key={item.href}
+                href={href(item.href)}
                 onClick={() => setOpen(false)}
-                className="mt-1 rounded-xl bg-accent px-4 py-3 text-center text-sm font-medium text-bg transition-colors hover:bg-accent-soft"
+                className="block rounded-2xl px-4 py-3 text-muted transition-colors hover:bg-surface-2 hover:text-fg"
               >
-                Résumé
+                {item.label}
               </a>
-            </div>
+            ))}
+            <Link
+              href="/resume"
+              onClick={() => setOpen(false)}
+              className="btn-primary mt-1 block rounded-2xl px-4 py-3 text-center font-semibold"
+            >
+              <span className="relative z-10">Résumé</span>
+            </Link>
           </div>
         )}
       </nav>

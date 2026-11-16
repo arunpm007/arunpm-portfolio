@@ -4,6 +4,9 @@
 //  Keep this in step with public/arunpm_resume.pdf.
 // ------------------------------------------------------------------
 
+// Set NEXT_PUBLIC_SITE_URL to the deployed URL (used for link previews).
+export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3050";
+
 export const profile = {
   name: "Arun P M",
   role: "Senior Frontend Lead Engineer",
@@ -157,6 +160,8 @@ export type Project = {
   featured?: boolean;
   href?: string;
   repo?: string;
+  /** Screenshots in /public/projects — first one is the card image. */
+  images?: string[];
 };
 
 export const projects: Project[] = [
@@ -168,6 +173,7 @@ export const projects: Project[] = [
     status: "Open source",
     featured: true,
     repo: "https://github.com/arunpm007/it-support-desk",
+    images: ["/projects/it-support-desk-1.png", "/projects/it-support-desk-2.png"],
   },
   {
     title: "AnimeMind",
@@ -176,6 +182,7 @@ export const projects: Project[] = [
     tags: ["Next.js 16", "React 19", "TypeScript", "Drizzle", "PostgreSQL", "Vitest"],
     status: "Built",
     featured: true,
+    images: ["/projects/animemind-1.jpg", "/projects/animemind-2.jpg"],
   },
   {
     title: "Coorg Car Point",
@@ -185,6 +192,7 @@ export const projects: Project[] = [
     status: "Live",
     featured: true,
     href: "https://coorg-car-point.netlify.app/",
+    images: ["/projects/coorg-car-point-1.jpg", "/projects/coorg-car-point-2.jpg"],
   },
   {
     title: "3D Material Studio",
@@ -194,13 +202,26 @@ export const projects: Project[] = [
     status: "Open source",
     // Add `href` with the live URL once it's deployed, and set status to "Live".
     repo: "https://github.com/arunpm007/material-studio",
+    images: ["/projects/material-studio-1.jpg", "/projects/material-studio-2.png"],
   },
 ];
 
 export const nav = [
   { label: "Work", href: "#work" },
   { label: "Projects", href: "#projects" },
+  { label: "Case studies", href: "#case-studies" },
   { label: "Skills", href: "#skills" },
   { label: "About", href: "#about" },
   { label: "Contact", href: "#contact" },
+];
+
+/** Headline numbers shown in the hero ticker. */
+export const ticker = [
+  "3.5 yrs shipping web + mobile",
+  "Leading a team of 5",
+  "SSO across 4 products",
+  "191 → 53 MB static assets",
+  "8.4 → 0.6 MB card art",
+  "−35% mobile crash rate",
+  "WCAG AA audited",
 ];

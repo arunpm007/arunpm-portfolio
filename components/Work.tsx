@@ -2,50 +2,52 @@ import SectionHeading from "./SectionHeading";
 import Reveal from "./Reveal";
 import { experience } from "@/lib/site";
 
+/** Splits "Lead-in: rest" so the lead-in can be set in the foreground colour. */
+function splitLead(text: string): [string | null, string] {
+  const i = text.indexOf(": ");
+  return i > 0 && i < 40 ? [text.slice(0, i), text.slice(i + 2)] : [null, text];
+}
+
 export default function Work() {
   return (
-    <section id="work" className="mx-auto max-w-6xl px-6 py-28">
+    <section id="work" className="mx-auto max-w-6xl scroll-mt-24 px-6 py-24">
       <SectionHeading
         index="01"
-        title="Experience"
-        subtitle="Where I've shipped — leading frontend today, enterprise mobile before that."
+        title="Where I've shipped"
+        emphasis="shipped"
+        subtitle="Leading frontend today, enterprise mobile before that."
       />
 
-      <div className="space-y-6">
-        {experience.map((job, i) => (
-          <Reveal key={job.company} delay={i * 80}>
-            <article className="card rounded-2xl p-6 sm:p-8">
-              <div className="flex flex-col gap-1 border-b border-border pb-5 sm:flex-row sm:items-baseline sm:justify-between">
-                <div>
-                  <h3 className="font-heading text-xl font-bold">
-                    {job.company}
-                  </h3>
-                  <p className="text-accent">{job.role}</p>
-                </div>
-                <span className="text-sm text-faint">{job.period}</span>
-              </div>
+      <div className="space-y-20">
+        {experience.map((job) => (
+          <Reveal key={job.company} className="grid gap-8 md:grid-cols-[180px_1fr]">
+            <div className="md:sticky md:top-28 md:self-start">
+              <p className="label">{job.period}</p>
+            </div>
+            <article>
+              <h3 className="font-display text-4xl italic leading-tight sm:text-5xl">{job.company}</h3>
+              <p className="mt-2 text-muted">{job.role}</p>
+              <p className="mt-6 max-w-2xl text-lg leading-relaxed">{job.summary}</p>
 
-              <p className="mt-5 text-muted">{job.summary}</p>
-
-              <ul className="mt-5 space-y-2.5">
-                {job.highlights.map((h) => (
-                  <li key={h} className="flex gap-3 text-sm leading-relaxed text-muted">
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent/70" />
-                    <span>{h}</span>
-                  </li>
-                ))}
+              <ul className="mt-8 divide-y divide-border border-y hairline">
+                {job.highlights.map((h) => {
+                  const [lead, rest] = splitLead(h);
+                  return (
+                    <li key={h} className="grid gap-1 py-4 text-[0.95rem] leading-relaxed sm:grid-cols-[170px_1fr] sm:gap-6">
+                      {lead ? (
+                        <>
+                          <span className="font-medium text-fg">{lead.charAt(0).toUpperCase() + lead.slice(1)}</span>
+                          <span className="text-muted">{rest.charAt(0).toUpperCase() + rest.slice(1)}</span>
+                        </>
+                      ) : (
+                        <span className="text-muted sm:col-span-2">{rest}</span>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
 
-              <div className="mt-6 flex flex-wrap gap-2">
-                {job.stack.map((tech) => (
-                  <span
-                    key={tech}
-                    className="rounded-full border border-border bg-surface-2/50 px-3 py-1 text-xs text-muted"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
+              <p className="label mt-6 leading-6">{job.stack.join("  ·  ")}</p>
             </article>
           </Reveal>
         ))}

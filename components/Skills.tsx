@@ -4,34 +4,34 @@ import { skills } from "@/lib/site";
 
 export default function Skills() {
   return (
-    <section id="skills" className="mx-auto max-w-6xl px-6 py-28">
+    <section id="skills" className="mx-auto max-w-6xl scroll-mt-24 px-6 py-24">
       <SectionHeading
-        index="03"
-        title="Skills"
-        subtitle="The toolkit — frontend first, with the backend, auth and infra to ship it."
+        index="04"
+        title="The toolkit"
+        emphasis="toolkit"
+        subtitle="Frontend first, with the backend, auth and infrastructure to ship it."
       />
 
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {skills.map((group, i) => (
-          <Reveal key={group.title} delay={i * 60}>
-            <div className="card h-full rounded-2xl p-6">
-              <h3 className="font-heading text-sm font-bold uppercase tracking-wider text-accent">
-                {group.title}
-              </h3>
-              <ul className="mt-4 flex flex-wrap gap-2">
-                {group.items.map((item) => (
-                  <li
-                    key={item}
-                    className="rounded-lg border border-border bg-surface-2/40 px-3 py-1.5 text-sm text-muted"
-                  >
-                    {item}
-                  </li>
+      <Reveal>
+        <dl className="border-b hairline">
+          {skills.map((group) => (
+            <div
+              key={group.title}
+              className="grid gap-2 border-t hairline py-6 md:grid-cols-[180px_1fr] md:gap-6"
+            >
+              <dt className="label pt-1">{group.title}</dt>
+              <dd className="text-xl leading-relaxed tracking-tight sm:text-2xl">
+                {group.items.map((item, i) => (
+                  <span key={item}>
+                    <span className="transition-colors hover:text-holo">{item}</span>
+                    {i < group.items.length - 1 && <span className="text-faint">, </span>}
+                  </span>
                 ))}
-              </ul>
+              </dd>
             </div>
-          </Reveal>
-        ))}
-      </div>
+          ))}
+        </dl>
+      </Reveal>
     </section>
   );
 }

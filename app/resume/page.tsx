@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { profile } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -14,7 +15,7 @@ export default function ResumePage() {
       {/* Top bar */}
       <header className="sticky top-0 z-50 border-b border-border bg-bg/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
-          <a
+          <Link
             href="/"
             className="group inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-fg"
           >
@@ -32,21 +33,21 @@ export default function ResumePage() {
             </svg>
             <span className="hidden sm:inline">Back to portfolio</span>
             <span className="sm:hidden">Back</span>
-          </a>
+          </Link>
 
           <div className="flex items-center gap-2">
             <a
               href={profile.resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="cursor-pointer rounded-full border border-border bg-surface/50 px-4 py-2 text-sm text-fg transition-colors hover:border-accent/50"
+              className="cursor-pointer rounded-full border border-border bg-surface/50 px-4 py-2 text-sm text-fg transition-colors hover:border-fg/40"
             >
               Open in new tab
             </a>
             <a
               href={profile.resumeUrl}
               download={downloadName}
-              className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-medium text-bg transition-colors hover:bg-accent-soft"
+              className="btn-primary inline-flex cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -83,7 +84,7 @@ export default function ResumePage() {
               <a
                 href={profile.resumeUrl}
                 download={downloadName}
-                className="rounded-full bg-accent px-6 py-3 text-sm font-medium text-bg transition-colors hover:bg-accent-soft"
+                className="btn-primary rounded-full px-6 py-3 text-sm font-semibold"
               >
                 Download résumé (PDF)
               </a>
@@ -96,7 +97,7 @@ export default function ResumePage() {
           <a
             href={profile.resumeUrl}
             download={downloadName}
-            className="text-accent hover:text-accent-soft"
+            className="text-fg underline decoration-fg/30 underline-offset-4 hover:decoration-fg"
           >
             Download
           </a>{" "}
@@ -105,7 +106,7 @@ export default function ResumePage() {
             href={profile.resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-accent hover:text-accent-soft"
+            className="text-fg underline decoration-fg/30 underline-offset-4 hover:decoration-fg"
           >
             open in a new tab
           </a>

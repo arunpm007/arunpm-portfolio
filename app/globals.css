@@ -2,21 +2,31 @@
 
 /* ------------------------------------------------------------------ */
 /*  Theme tokens (Tailwind v4 CSS-first)                               */
+/*  Warm ink + paper white. Colour only ever comes from the holo foil. */
 /* ------------------------------------------------------------------ */
 @theme {
-  --color-bg: #070b14;
-  --color-surface: #0d1424;
-  --color-surface-2: #141d33;
-  --color-border: #1f2b45;
-  --color-fg: #f5f8ff;
-  --color-muted: #94a3b8;
-  --color-faint: #64748b;
-  --color-accent: #22c55e;
-  --color-accent-dim: #16a34a;
-  --color-accent-soft: #4ade80;
+  --color-bg: #0c0c0e;
+  --color-surface: #131316;
+  --color-surface-2: #1b1b1f;
+  --color-border: #2a2a30;
+  --color-fg: #edece7;
+  --color-muted: #a8a69f;
+  --color-faint: #8a887f;
 
-  --font-heading: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
-  --font-body: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --color-holo-1: #9ff2d8;
+  --color-holo-2: #a9c4ff;
+  --color-holo-3: #d8b4ff;
+  --color-holo-4: #ffc7a6;
+
+  --font-display: var(--font-instrument), ui-serif, Georgia, serif;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+
+  --animate-marquee: marquee 38s linear infinite;
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -24,23 +34,33 @@
 /* ------------------------------------------------------------------ */
 :root {
   color-scheme: dark;
-}
-
-html {
-  scroll-behavior: smooth;
+  --holo: linear-gradient(
+    100deg,
+    var(--color-holo-1) 0%,
+    var(--color-holo-2) 30%,
+    var(--color-holo-3) 58%,
+    var(--color-holo-4) 85%,
+    var(--color-holo-1) 100%
+  );
 }
 
 body {
   background: var(--color-bg);
   color: var(--color-fg);
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--color-accent) 35%, transparent);
+  background: color-mix(in srgb, var(--color-holo-3) 40%, transparent);
   color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-holo-2);
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
 /* Thin custom scrollbar */
@@ -51,41 +71,102 @@ body {
   border-radius: 99px;
   border: 2px solid var(--color-bg);
 }
-::-webkit-scrollbar-thumb:hover { background: var(--color-surface-2); }
 
 /* ------------------------------------------------------------------ */
-/*  Utilities / effects                                                */
+/*  Type helpers                                                       */
 /* ------------------------------------------------------------------ */
-.font-heading { font-family: var(--font-heading); }
+.font-display { font-family: var(--font-display); font-weight: 400; }
 
-/* Gradient headline text */
-.text-gradient {
-  background: linear-gradient(180deg, #ffffff 0%, #b9c6dc 100%);
+/* Mono metadata label: the "spec sheet" voice of the site */
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+/* Iridescent text, used for one or two words at a time */
+.text-holo {
+  background: var(--holo);
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  animation: holo-shift 9s ease-in-out infinite alternate;
 }
-.text-gradient-accent {
-  background: linear-gradient(120deg, var(--color-accent-soft), var(--color-accent));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-/* Ambient background glow used behind the hero */
-.hero-glow {
-  background:
-    radial-gradient(58% 52% at 50% 40%, rgba(34, 197, 94, 0.10), transparent 70%),
-    radial-gradient(40% 40% at 78% 15%, rgba(56, 189, 248, 0.07), transparent 70%);
+@keyframes holo-shift {
+  from { background-position: 0% 50%; }
+  to { background-position: 100% 50%; }
 }
 
-/* Faint dotted grid */
-.bg-grid {
-  background-image: radial-gradient(rgba(148, 163, 184, 0.10) 1px, transparent 1px);
-  background-size: 34px 34px;
-  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 55%, transparent 100%);
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 55%, transparent 100%);
+/* ------------------------------------------------------------------ */
+/*  Surfaces                                                           */
+/* ------------------------------------------------------------------ */
+.hairline { border-color: var(--color-border); }
+
+/* Card with a cursor-following spotlight + holo edge on hover.
+   --mx / --my are set by <Spotlight>. */
+.spot {
+  position: relative;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  isolation: isolate;
+  transition: border-color 0.3s ease;
 }
+.spot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--color-holo-2) 9%, transparent),
+    transparent 60%
+  );
+}
+.spot::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 50%),
+    var(--color-holo-3),
+    var(--color-holo-1) 40%,
+    transparent 70%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.spot:hover::before,
+.spot:hover::after { opacity: 1; }
+
+/* Primary button: paper-white pill with a holo sheen on hover */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-fg);
+  color: var(--color-bg);
+}
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--holo);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  mix-blend-mode: multiply;
+}
+.btn-primary:hover::after { opacity: 0.55; }
 
 /* Film grain overlay */
 .grain::after {
@@ -94,35 +175,36 @@ body {
   inset: 0;
   z-index: 60;
   pointer-events: none;
-  opacity: 0.035;
+  opacity: 0.04;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Reveal-on-scroll */
-.reveal {
-  opacity: 0;
-  transform: translateY(26px);
-  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
-}
-.reveal.is-visible {
-  opacity: 1;
-  transform: none;
+/* Ambient light behind the hero card */
+.hero-aura {
+  background:
+    radial-gradient(40% 45% at 72% 48%, color-mix(in srgb, var(--color-holo-3) 14%, transparent), transparent 70%),
+    radial-gradient(30% 35% at 82% 30%, color-mix(in srgb, var(--color-holo-1) 9%, transparent), transparent 70%);
 }
 
-/* Card hover accent */
-.card {
-  background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-bg) 130%);
-  border: 1px solid var(--color-border);
-  transition: border-color 0.25s ease, transform 0.25s ease, background 0.25s ease;
-}
-.card:hover {
-  border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-border));
-  background: linear-gradient(180deg, var(--color-surface-2) 0%, var(--color-bg) 140%);
+/* ------------------------------------------------------------------ */
+/*  Reveal-on-scroll — only hides content when scripting is on,        */
+/*  so the page is never blank if JS fails.                            */
+/* ------------------------------------------------------------------ */
+@media (scripting: enabled) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .reveal { opacity: 1; transform: none; transition: none; }
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .text-holo { animation: none; }
+  .animate-marquee { animation: none; }
 }
