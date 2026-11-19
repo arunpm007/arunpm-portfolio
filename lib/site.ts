@@ -224,8 +224,8 @@ export const projects: Project[] = [
     blurb:
       "A dev tool to edit 3D model materials in the browser — load any GLB, tweak each part's colour, metalness and roughness live, then copy the config into your own project.",
     tags: ["React Three Fiber", "Three.js", "glTF", "Vite"],
-    status: "Open source",
-    // Add `href` with the live URL once it's deployed, and set status to "Live".
+    status: "Live",
+    href: "https://finish-3d.vercel.app",
     repo: "https://github.com/arunpm007/material-studio",
     images: ["/projects/material-studio-1.jpg", "/projects/material-studio-2.png"],
   },
