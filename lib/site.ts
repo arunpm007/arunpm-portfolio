@@ -203,8 +203,9 @@ export const projects: Project[] = [
     blurb:
       "A personal watch tracker that works out which seasons you've seen, what comes next and whether it has been released. Versioned REST API, refresh-token rotation with theft detection, row-level security, a rate-limited and cached data provider, and 63 automated tests.",
     tags: ["Next.js 16", "React 19", "TypeScript", "Drizzle", "PostgreSQL", "Vitest"],
-    status: "Built",
+    status: "Open source",
     featured: true,
+    repo: "https://github.com/arunpm007/animemind",
     images: ["/projects/animemind-1.jpg", "/projects/animemind-2.jpg"],
   },
   {
@@ -215,6 +216,7 @@ export const projects: Project[] = [
     status: "Live",
     featured: true,
     href: "https://coorg-car-point.netlify.app/",
+    repo: "https://github.com/arunpm007/car-listings",
     images: ["/projects/coorg-car-point-1.jpg", "/projects/coorg-car-point-2.jpg"],
   },
   {
