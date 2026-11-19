@@ -84,7 +84,7 @@ export const capabilities: Capability[] = [
       "GPU-aware quality tiers and asset budgets",
       "Scroll and route choreography with GSAP — always with a reduced-motion path",
     ],
-    evidence: ["Etta Global", "Material Studio", "This portfolio"],
+    evidence: ["Etta Global", "Finish", "This portfolio"],
     stack: "Three.js · React Three Fiber · GLSL · GSAP",
     link: { href: "/work/realtime-3d", label: "Case study" },
   },
@@ -220,7 +220,7 @@ export const projects: Project[] = [
     images: ["/projects/coorg-car-point-1.jpg", "/projects/coorg-car-point-2.jpg"],
   },
   {
-    title: "3D Material Studio",
+    title: "Finish — 3D Material Studio",
     blurb:
       "A dev tool to edit 3D model materials in the browser — load any GLB, tweak each part's colour, metalness and roughness live, then copy the config into your own project.",
     tags: ["React Three Fiber", "Three.js", "glTF", "Vite"],
