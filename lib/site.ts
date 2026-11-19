@@ -198,7 +198,7 @@ export const projects: Project[] = [
     status: "Open source",
     featured: true,
     repo: "https://github.com/arunpm007/animemind",
-    images: ["/projects/animemind-1.jpg", "/projects/animemind-2.jpg"],
+    images: ["/projects/animemind-home.jpg", "/projects/animemind-library.jpg"],
   },
   {
     title: "Coorg Car Point",
