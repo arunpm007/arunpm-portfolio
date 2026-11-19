@@ -1,11 +1,10 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/home/Hero";
 import Statement from "@/components/home/Statement";
-import SelectedWork from "@/components/home/SelectedWork";
-import Capabilities from "@/components/home/Capabilities";
-import Proof from "@/components/home/Proof";
-import Experience from "@/components/home/Experience";
 import Projects from "@/components/home/Projects";
+import Capabilities from "@/components/home/Capabilities";
+import Skills from "@/components/home/Skills";
+import Experience from "@/components/home/Experience";
 import Contact from "@/components/home/Contact";
 import { ScrollProgress } from "@/components/ui";
 import { RefreshOnLoad } from "@/components/motion/Motion";
@@ -19,11 +18,10 @@ export default function Home() {
       <main>
         <Hero />
         <Statement />
-        <SelectedWork />
-        <Capabilities />
-        <Proof />
-        <Experience />
         <Projects />
+        <Capabilities />
+        <Skills />
+        <Experience />
         <Contact />
       </main>
     </>

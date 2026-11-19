@@ -120,15 +120,69 @@ body {
 .no-scrollbar::-webkit-scrollbar { display: none; }
 
 /* ------------------------------------------------------------------ */
+/*  Bold "collage" utilities — stickers, tape, torn strip, scrawl.     */
+/*  Mono + signal only; used by the home sections (see /preview/bold). */
+/* ------------------------------------------------------------------ */
+.tape {
+  position: absolute;
+  background: linear-gradient(135deg, rgba(236, 232, 223, 0.2), rgba(236, 232, 223, 0.42));
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+.halftone {
+  background-image: radial-gradient(rgba(236, 232, 223, 0.55) 1.3px, transparent 1.5px);
+  background-size: 11px 11px;
+}
+/* Cream sticker chip with a hard offset shadow. Defined after .label so a
+   `.sticker.label` chip takes the carbon text colour (source-order wins). */
+.sticker {
+  background: var(--color-fg);
+  color: var(--color-bg);
+  border: 1px solid var(--color-bg);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.6);
+}
+.torn {
+  background: var(--color-signal);
+  clip-path: polygon(0% 22%, 7% 8%, 16% 30%, 26% 6%, 37% 28%, 49% 10%, 61% 30%, 73% 8%, 85% 28%, 95% 10%, 100% 26%, 100% 78%, 93% 94%, 82% 72%, 70% 92%, 58% 70%, 46% 92%, 34% 72%, 23% 94%, 12% 72%, 3% 92%, 0% 76%);
+}
+.scrawl {
+  font-family: var(--font-caveat), cursive;
+}
+.bubble {
+  position: relative;
+  background: var(--color-fg);
+  color: var(--color-bg);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.6);
+}
+.bubble::after {
+  content: "";
+  position: absolute;
+  left: 22px;
+  bottom: -11px;
+  border-width: 12px 10px 0 0;
+  border-style: solid;
+  border-color: var(--color-fg) transparent transparent transparent;
+  filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.4));
+}
+.wob { animation: wob 4s ease-in-out infinite; }
+@keyframes wob { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+
+/* ------------------------------------------------------------------ */
 /*  Reveal fallback (where GSAP isn't driving)                         */
 /* ------------------------------------------------------------------ */
 @media (scripting: enabled) {
   .reveal {
     opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.9s var(--ease-expo), transform 0.9s var(--ease-expo);
+    transform: translateY(34px) scale(0.985);
+    transition: opacity 0.6s var(--ease-expo), transform 0.85s var(--ease-expo);
+    will-change: transform, opacity;
   }
   .reveal.is-visible { opacity: 1; transform: none; }
+
+  /* Wipe reveal: a child of a .reveal element is unveiled left→right when the
+     parent scrolls into view (used on the work-card screenshots). */
+  .wipe { clip-path: inset(0 100% 0 0); transition: clip-path 1.05s var(--ease-expo); }
+  .reveal.is-visible .wipe { clip-path: inset(0 0 0 0); }
 }
 
 /* ------------------------------------------------------------------ */
@@ -185,4 +239,6 @@ body {
   .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
   .mini-card, .pack-half, .pack-card, .mini-foil { transition: none !important; }
   .mint-scan, .mint-flash { animation-duration: 0.01s; }
+  .wob { animation: none !important; }
+  .wipe { clip-path: none !important; transition: none !important; }
 }

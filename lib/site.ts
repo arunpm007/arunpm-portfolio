@@ -47,7 +47,6 @@ export type Capability = {
   /** Where this was proven — across jobs and own projects. */
   evidence: string[];
   stack: string;
-  link?: { href: string; label: string };
 };
 
 export const capabilities: Capability[] = [
@@ -86,7 +85,6 @@ export const capabilities: Capability[] = [
     ],
     evidence: ["Etta Global", "Finish", "This portfolio"],
     stack: "Three.js · React Three Fiber · GLSL · GSAP",
-    link: { href: "/work/realtime-3d", label: "Case study" },
   },
   {
     id: "mobile",
@@ -99,7 +97,6 @@ export const capabilities: Capability[] = [
     ],
     evidence: ["Vtiger CRM", "Etta Global", "Coorg Car Point"],
     stack: "Flutter · Dart · Riverpod · Mobile web",
-    link: { href: "/work/native-crm", label: "Case study" },
   },
   {
     id: "ai",
@@ -112,7 +109,6 @@ export const capabilities: Capability[] = [
     ],
     evidence: ["IT Support Desk"],
     stack: "Claude API · Tool use · Zod · Next.js",
-    link: { href: "/work/ai-helpdesk", label: "Case study" },
   },
   {
     id: "fullstack",
@@ -125,7 +121,6 @@ export const capabilities: Capability[] = [
     ],
     evidence: ["Etta Global", "AnimeMind", "Coorg Car Point"],
     stack: "Node · NestJS · PostgreSQL · Redis · Supabase",
-    link: { href: "/work/identity", label: "Case study" },
   },
 
 ];
@@ -134,10 +129,10 @@ export type Experience = {
   company: string;
   role: string;
   period: string;
+  /** One readable, powerful line — the brief a hiring manager reads at a glance. */
+  brief: string;
   lines: string[];
   stack: string;
-  /** Deep dives into work done here. */
-  links?: { href: string; label: string }[];
 };
 
 export const experience: Experience[] = [
@@ -145,30 +140,27 @@ export const experience: Experience[] = [
     company: "Etta Global",
     role: "Senior Lead Engineer, Frontend · UI/UX & Frontend Team Lead",
     period: "2026 — Now",
+    brief:
+      "Own the frontend architecture of a connected product ecosystem — identity, payments, gaming, digital collectibles and more — and lead UI/UX for a cross-functional team. I build the hard parts myself: real-time 3D and WebGL, immersive gaming interfaces, motion and a layered design system, plus single sign-on and session security. From architecture standards and design reviews to the flows that ship.",
     lines: [
-      "Own the frontend architecture of a four-product ecosystem — identity, payments, gaming and digital collectibles — including the platform shell that sells every product in place.",
+      "Own the frontend architecture of a connected product ecosystem — identity, payments, gaming, digital collectibles and more — including the platform shell that sells every product in place.",
       "Lead frontend and UI/UX for a cross-functional team: architecture standards, design and code reviews, and product decisions turned into shipped flows.",
       "Built single sign-on and session security, real-time 3D, wallet integration and a layered design system that migrated 80+ legacy screens without a freeze.",
     ],
     stack: "Next.js · React · TypeScript · Three.js / R3F · NestJS · PostgreSQL · Redis",
-    links: [
-      { href: "/work/platform-shell", label: "Platform shell" },
-      { href: "/work/design-architecture", label: "Design architecture" },
-      { href: "/work/identity", label: "Identity" },
-      { href: "/work/realtime-3d", label: "Real-time 3D" },
-    ],
   },
   {
     company: "Vtiger CRM",
     role: "Software Developer, Flutter",
     period: "2023 — 2026",
+    brief:
+      "Sole engineer of an enterprise CRM's iOS and Android app — re-platformed it from fragile to stable and shipped field features end to end, from architecture to store releases.",
     lines: [
       "Owned an enterprise CRM's mobile app end to end as its sole engineer — architecture, features and store releases on iOS and Android.",
       "Re-platformed it on Riverpod and MVVM and took it from fragile to stable, closing 50+ production issues.",
       "Shipped field features: geo-fenced check-in, deep links, document scanning and background push.",
     ],
     stack: "Flutter · Dart · Riverpod · Firebase",
-    links: [{ href: "/work/native-crm", label: "Native CRM app" }],
   },
 ];
 
@@ -234,15 +226,20 @@ export const projects: Project[] = [
 export const nav = [
   { label: "Work", href: "#work" },
   { label: "Capabilities", href: "#capabilities" },
-  { label: "Proof", href: "#proof" },
+  { label: "Skills", href: "#skills" },
   { label: "Experience", href: "#experience" },
-  { label: "Projects", href: "#projects" },
   { label: "Contact", href: "#contact" },
 ]
+
+/** Scannable scope chips in the hero — confirmed, scope over task metrics. */
+export const heroScope = [
+  "Senior Engineer & Lead",
+  "Multi-product ecosystem",
+  "Web · iOS · Android · 3D",
+];
 
 /** What I'm looking for next, shown in Contact. */
 export const lookingFor = [
   "Senior frontend, frontend architect or lead roles",
-  "Product teams where design quality and engineering rigour both matter",
   "Products where design quality, engineering rigour and ownership all matter",
 ];

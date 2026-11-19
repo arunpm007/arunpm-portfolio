@@ -55,7 +55,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     const hash = window.location.hash;
     const jump = () => {
       const target = hash ? document.querySelector<HTMLElement>(hash) : null;
-      if (lenis) lenis.scrollTo(target ?? 0, { immediate: true, force: true, offset: target && target.id !== "work" ? -72 : 0 });
+      if (lenis) lenis.scrollTo(target ?? 0, { immediate: true, force: true, offset: target ? -72 : 0 });
       else if (target) target.scrollIntoView();
       else window.scrollTo(0, 0);
       ScrollTrigger.refresh();
